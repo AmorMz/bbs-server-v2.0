@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.muzi.bbs.dao.BillboardDAO">
+
+    <resultMap id="billboardMap" type="pers.muzi.bbs.entity.Billboard">
+        <id column="id" property="id"/>
+        <result column="content" property="content"/>
+        <result column="create_time" property="createTime"/>
+        <result column="is_delete" property="delete"/>
+    </resultMap>
+
+    <sql id="allField">
+        id, content, create_time, is_delete
+    </sql>
+
+    <select id="getBillboard" resultMap="billboardMap">
+        SELECT
+            <include refid="allField"/>
+        FROM
+            bbs_billboard
+        WHERE
+            id = (SELECT max( id ) FROM bbs_billboard)
+        AND
+            is_delete = 0
+    </select>
+</mapper>
