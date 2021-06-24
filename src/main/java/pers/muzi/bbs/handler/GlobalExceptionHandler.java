@@ -7,6 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import pers.muzi.bbs.common.result.Resp;
 import pers.muzi.bbs.exception.global.ParamException;
 
@@ -43,14 +44,25 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 缺失参数异常处理
+     * RequestParam参数缺失
      */
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public Resp handlerParamException(MissingServletRequestParameterException e) {
+    public Resp handlerParamException(Exception e) {
         log.error(e.getMessage(), e);
         return Resp
                 .error()
-                .message("缺少参数");
+                .message("缺失参数!");
+    }
+
+    /**
+     * RequestParam参数类型不匹配
+     */
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public Resp handlerParamException(MethodArgumentTypeMismatchException e) {
+        log.error(e.getMessage(), e);
+        return Resp
+                .error()
+                .message("参数有误!");
     }
 
     /**

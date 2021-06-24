@@ -9,7 +9,7 @@ import pers.muzi.bbs.common.result.Resp;
 import pers.muzi.bbs.entity.dto.PostDTO;
 import pers.muzi.bbs.entity.vo.post.PostDetailVO;
 import pers.muzi.bbs.entity.vo.post.PostListVO;
-import pers.muzi.bbs.exception.global.ParamException;
+import pers.muzi.bbs.entity.vo.post.PostPersonalVO;
 import pers.muzi.bbs.service.PostService;
 
 import java.util.List;
@@ -27,6 +27,7 @@ public class PostController {
 
     /**
      * 查询所有帖子的数量 用于分页、统计等
+     *
      * @return total 帖子总数量
      */
     @ApiOperation("获取帖子总数量")
@@ -50,9 +51,6 @@ public class PostController {
     public Resp listPost(@PathVariable String tab,
                          @RequestParam("page") Integer page,
                          @RequestParam("limit") Integer limit) {
-        if (page == null || limit == null) {
-            throw new ParamException("参数有误");
-        }
         List<PostListVO> listPost = postService.listPosts(tab, page, limit);
         return Resp.ok().data("posts", listPost);
     }
@@ -60,6 +58,7 @@ public class PostController {
 
     /**
      * 发表帖子
+     *
      * @param postDTO 帖子DTO
      * @return 帖子id 发表成功后前端根据id进行跳转
      */
@@ -75,6 +74,7 @@ public class PostController {
 
     /**
      * 根据帖子id展示帖子详细信息
+     *
      * @param postId 帖子id
      * @return PostDetailVO
      */
@@ -83,6 +83,24 @@ public class PostController {
     public Resp postDetail(@PathVariable("postId") Integer postId) {
         PostDetailVO postDetail = postService.getPostDetail(postId);
         return Resp.ok().data("postDetail", postDetail);
+    }
+
+
+    /**
+     * 查询某账号发表的帖子
+     *
+     * @param account 帖子
+     * @param page    当前页
+     * @param limit   每页条数
+     * @return List<PostPersonalVO>
+     */
+    @ApiOperation("个人中心帖子展示")
+    @GetMapping("/user/{account}")
+    public Resp listPostCenter(@PathVariable("account") String account,
+                               @RequestParam("page") Integer page,
+                               @RequestParam("limit") Integer limit) {
+        List<PostPersonalVO> postPersonalVOList = postService.listPersonalPosts(account, page, limit);
+        return Resp.ok().data("posts", postPersonalVOList);
     }
 
 }

@@ -6,6 +6,7 @@ import pers.muzi.bbs.entity.Post;
 import pers.muzi.bbs.entity.Tag;
 import pers.muzi.bbs.entity.vo.post.PostDetailVO;
 import pers.muzi.bbs.entity.vo.post.PostListVO;
+import pers.muzi.bbs.entity.vo.post.PostPersonalVO;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ public interface PostDAO {
      * @param postId 帖子id
      * @return 标签list
      */
-    List<String> listPostTagsByPostId(@Param("postId") Integer postId);
+    List<String> listPostsTagsByPostId(@Param("postId") Integer postId);
 
     /**
      * 插入一条帖子
@@ -78,7 +79,16 @@ public interface PostDAO {
 
     /**
      * 根据帖子id 查询
-     * @param postId  帖子id
+     *
+     * @param postId 帖子id
      */
     PostDetailVO getPostDetail(@Param("postId") Integer postId);
+
+    /**
+     * 根据用户账号查询帖子
+     *
+     * @param account 用户账号
+     * @return List<PostPersonalVO>
+     */
+    List<PostPersonalVO> listPostsByAccount(@Param("account") String account);
 }

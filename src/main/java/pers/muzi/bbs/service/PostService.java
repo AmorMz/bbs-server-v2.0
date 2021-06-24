@@ -3,6 +3,7 @@ package pers.muzi.bbs.service;
 import pers.muzi.bbs.entity.dto.PostDTO;
 import pers.muzi.bbs.entity.vo.post.PostDetailVO;
 import pers.muzi.bbs.entity.vo.post.PostListVO;
+import pers.muzi.bbs.entity.vo.post.PostPersonalVO;
 
 import java.util.List;
 
@@ -37,8 +38,16 @@ public interface PostService {
 
     /**
      * 根据帖子id展示帖子详细信息
+     *
      * @param postId 帖子id
      * @return 帖子详情实体
      */
     PostDetailVO getPostDetail(Integer postId);
+
+    /**
+     * 个人中心展示帖子 根据用户账号查询
+     * @param account 用户账号
+     * @return List<PostPersonalVO>
+     */
+    List<PostPersonalVO> listPersonalPosts(String account, Integer page, Integer limit);
 }

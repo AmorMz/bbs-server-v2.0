@@ -10,6 +10,7 @@ import pers.muzi.bbs.entity.Tag;
 import pers.muzi.bbs.entity.dto.PostDTO;
 import pers.muzi.bbs.entity.vo.post.PostDetailVO;
 import pers.muzi.bbs.entity.vo.post.PostListVO;
+import pers.muzi.bbs.entity.vo.post.PostPersonalVO;
 import pers.muzi.bbs.exception.global.ParamException;
 import pers.muzi.bbs.service.PostService;
 
@@ -56,7 +57,7 @@ public class PostServiceImpl implements PostService {
         }
         // 为帖子添加标签
         for (PostListVO post : posts) {
-            List<String> tags = postDAO.listPostTagsByPostId(post.getId());
+            List<String> tags = postDAO.listPostsTagsByPostId(post.getId());
             post.setTags(tags);
         }
         return posts;
@@ -125,9 +126,18 @@ public class PostServiceImpl implements PostService {
             return null;
         }
         // 为帖子设置标签
-        List<String> tags = postDAO.listPostTagsByPostId(postDetail.getId());
+        List<String> tags = postDAO.listPostsTagsByPostId(postDetail.getId());
         postDetail.setTags(tags);
         return postDetail;
+    }
+
+    @Override
+    public List<PostPersonalVO> listPersonalPosts(String account, Integer page, Integer limit) {
+        // 分页
+        PageHelper.startPage(page, limit);
+
+        List<PostPersonalVO> postPersonalVOList = postDAO.listPostsByAccount(account);
+        return postPersonalVOList;
     }
 
 }

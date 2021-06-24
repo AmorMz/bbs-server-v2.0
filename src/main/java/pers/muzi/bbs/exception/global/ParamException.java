@@ -4,7 +4,7 @@ package pers.muzi.bbs.exception.global;
  * @author AmorMz
  * 控制器接受参数错误
  */
-public class ParamException extends RuntimeException{
+public class ParamException extends RuntimeException {
     public ParamException() {
         super();
     }

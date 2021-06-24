@@ -40,6 +40,19 @@
         <result column="modify_time" property="modifyTime"/>
     </resultMap>
 
+    <!--个人中心展示帖子-->
+    <resultMap id="postPersonalMap" type="pers.muzi.bbs.entity.vo.post.PostPersonalVO">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="comment_count" property="commentCount"/>
+        <result column="collect_count" property="collectCount"/>
+        <result column="view_count" property="viewCount"/>
+        <result column="like_count" property="likeCount"/>
+        <result column="top" property="top"/>
+        <result column="essence" property="essence"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
     <sql id="key">
         <trim suffixOverrides=",">
             <if test="id != null and id != ''">
@@ -157,7 +170,7 @@
     </select>
 
 
-    <select id="listPostTagsByPostId" resultType="java.lang.String">
+    <select id="listPostsTagsByPostId" resultType="java.lang.String">
         SELECT t.`name`
         FROM bbs_post p,
              bbs_tag t,
@@ -210,6 +223,22 @@
                essence,
                modify_time
         FROM bbs_post
-        WHERE is_delete = 0 AND id = #{postId}
+        WHERE is_delete = 0
+          AND id = #{postId}
+    </select>
+
+    <select id="listPostsByAccount" resultMap="postPersonalMap">
+        SELECT id,
+               title,
+               comment_count,
+               collect_count,
+               view_count,
+               like_count,
+               top,
+               essence,
+               create_time
+        FROM bbs_post
+        WHERE user_id = (SELECT user_id FROM bbs_user WHERE account = #{account}) AND is_delete = 0
+        ORDER BY create_time DESC
     </select>
 </mapper>
