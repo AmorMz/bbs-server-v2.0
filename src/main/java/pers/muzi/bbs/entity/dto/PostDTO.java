@@ -32,5 +32,6 @@ public class PostDTO {
     private String content;
 
     @ApiModelProperty("帖子标签")
+
     private List<String> tags;
 }

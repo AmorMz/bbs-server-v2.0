@@ -30,7 +30,7 @@ public class Post {
     private String content;
 
     @ApiModelProperty("作者id")
-    private String userId;
+    private Integer userId;
 
     @ApiModelProperty("评论数量")
     private Integer commentCount;

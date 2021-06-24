@@ -1,5 +1,6 @@
 package pers.muzi.bbs.service;
 
+import pers.muzi.bbs.entity.dto.PostDTO;
 import pers.muzi.bbs.entity.vo.post.PostListVO;
 
 import java.util.List;
@@ -22,4 +23,11 @@ public interface PostService {
      * @return post集合
      */
     List<PostListVO> listPosts(String tab, Integer page, Integer limit);
+
+    /**
+     * 发表一篇帖子
+     * @param postDTO post数据实体
+     * @return 影响行数
+     */
+    Integer publishPost(PostDTO postDTO, Integer authorId);
 }

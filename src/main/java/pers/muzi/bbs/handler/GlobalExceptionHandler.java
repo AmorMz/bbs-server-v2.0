@@ -23,9 +23,30 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Resp handlerMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        log.error(e.toString() + ":" + e.getMessage(), e);
+        log.error(e.getMessage(), e);
         return Resp
                 .error()
                 .message(Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage());
+    }
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * 未知异常处理 置底
+     */
+    @ExceptionHandler(Exception.class)
+    public Resp globalException(Exception e) {
+        log.error(e.getMessage(), e);
+        return Resp
+                .error()
+                .message("系统错误，请联系管理员");
     }
 }

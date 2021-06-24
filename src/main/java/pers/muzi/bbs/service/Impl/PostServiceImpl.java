@@ -2,11 +2,17 @@ package pers.muzi.bbs.service.Impl;
 
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pers.muzi.bbs.dao.PostDAO;
+import pers.muzi.bbs.entity.Post;
+import pers.muzi.bbs.entity.Tag;
+import pers.muzi.bbs.entity.dto.PostDTO;
 import pers.muzi.bbs.entity.vo.post.PostListVO;
 import pers.muzi.bbs.service.PostService;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,6 +26,7 @@ public class PostServiceImpl implements PostService {
 
     /**
      * 获取帖子总数 用于统计、分页
+     *
      * @return 帖子总数量
      */
     @Override
@@ -29,6 +36,7 @@ public class PostServiceImpl implements PostService {
 
     /**
      * 分页查询所有帖子
+     *
      * @param tab   排序规则 latest/hot 最新/最热
      * @param page  当前页
      * @param limit 每页限制条数
@@ -46,5 +54,61 @@ public class PostServiceImpl implements PostService {
             post.setTags(tags);
         }
         return postDAO.listPosts(tab);
+    }
+
+    /**
+     * 发表一篇帖子
+     *
+     * @param postDTO post数据实体
+     * @return 返回新建帖子的id
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Integer publishPost(PostDTO postDTO, Integer authorId) {
+        // 将帖子写入数据库
+        Post post = new Post();
+        post
+                .setTitle(postDTO.getTitle())
+                .setContent(postDTO.getContent())
+                // 默认不置顶 不加精
+                .setTop(false)
+                .setEssence(false)
+                .setUserId(authorId)
+                // 默认评论 收藏 点赞 浏览为0
+                .setCommentCount(0)
+                .setCollectCount(0)
+                .setLikeCount(0)
+                .setViewCount(0)
+                .setCreateTime(new Date())
+                .setModifyTime(new Date());
+        // 发布帖子的id
+        postDAO.insertPost(post);
+        Integer postId = post.getId();
+
+        // 维护帖子标签
+        List<String> tags = postDTO.getTags();
+        if (tags != null) {
+            for (String tag : tags) {
+                // 判断是否存在该标签 返回标签id
+                Integer tagId = postDAO.getTagIdByTagName(tag);
+                if (tagId != null) {
+                    // 存在该标签 维护标签与帖子关系
+                    postDAO.insertPostTag(postId, tagId);
+                } else {
+                    // 该标签不存在 新建标签并 维护标签与帖子关系
+                    Tag newTag = new Tag();
+                    newTag
+                            .setName(tag)
+                            .setPostCount(0)
+                            .setCreateTime(new Date());
+                    postDAO.insertTag(newTag);
+                    postDAO.insertPostTag(postId, newTag.getId());
+                }
+
+                // 更新标签下话题数量
+                postDAO.updateTagPostCount(tagId);
+            }
+        }
+        return postId;
     }
 }
