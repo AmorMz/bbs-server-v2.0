@@ -7,8 +7,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pers.muzi.bbs.common.result.Resp;
 import pers.muzi.bbs.entity.dto.PostDTO;
+import pers.muzi.bbs.entity.vo.post.PostDetailVO;
 import pers.muzi.bbs.entity.vo.post.PostListVO;
+import pers.muzi.bbs.exception.global.ParamException;
 import pers.muzi.bbs.service.PostService;
+
 import java.util.List;
 
 /**
@@ -36,6 +39,7 @@ public class PostController {
 
     /**
      * 分页查询所有帖子
+     *
      * @param tab   排序规则 latest/hot 最新/最热
      * @param page  当前页
      * @param limit 每页限制条数
@@ -46,19 +50,39 @@ public class PostController {
     public Resp listPost(@PathVariable String tab,
                          @RequestParam("page") Integer page,
                          @RequestParam("limit") Integer limit) {
-
+        if (page == null || limit == null) {
+            throw new ParamException("参数有误");
+        }
         List<PostListVO> listPost = postService.listPosts(tab, page, limit);
         return Resp.ok().data("posts", listPost);
     }
 
 
+    /**
+     * 发表帖子
+     * @param postDTO 帖子DTO
+     * @return 帖子id 发表成功后前端根据id进行跳转
+     */
     @ApiOperation("发表一篇帖子")
     @PostMapping
     public Resp publish(@RequestBody @Validated PostDTO postDTO) {
         // 获取当前登录用户id
         Integer authorId = 1;
         Integer postId = postService.publishPost(postDTO, authorId);
-        return Resp.ok().message("发表成功!即将跳转至详情界面");
+        return Resp.ok().message("发表成功!即将跳转至详情界面").data("postId", postId);
+    }
+
+
+    /**
+     * 根据帖子id展示帖子详细信息
+     * @param postId 帖子id
+     * @return PostDetailVO
+     */
+    @ApiOperation("展示帖子详细信息")
+    @GetMapping("/detail/{postId}")
+    public Resp postDetail(@PathVariable("postId") Integer postId) {
+        PostDetailVO postDetail = postService.getPostDetail(postId);
+        return Resp.ok().data("postDetail", postDetail);
     }
 
 }

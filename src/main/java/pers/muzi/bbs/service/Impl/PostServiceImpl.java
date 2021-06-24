@@ -2,14 +2,15 @@ package pers.muzi.bbs.service.Impl;
 
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pers.muzi.bbs.dao.PostDAO;
 import pers.muzi.bbs.entity.Post;
 import pers.muzi.bbs.entity.Tag;
 import pers.muzi.bbs.entity.dto.PostDTO;
+import pers.muzi.bbs.entity.vo.post.PostDetailVO;
 import pers.muzi.bbs.entity.vo.post.PostListVO;
+import pers.muzi.bbs.exception.global.ParamException;
 import pers.muzi.bbs.service.PostService;
 
 import java.util.Date;
@@ -44,16 +45,21 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public List<PostListVO> listPosts(String tab, Integer page, Integer limit) {
+        if (page == 0 || limit == 0) {
+            throw new ParamException("参数有误");
+        }
         // 分页
         PageHelper.startPage(page, limit);
         List<PostListVO> posts = postDAO.listPosts(tab);
-
+        if (posts == null) {
+            return null;
+        }
         // 为帖子添加标签
         for (PostListVO post : posts) {
             List<String> tags = postDAO.listPostTagsByPostId(post.getId());
             post.setTags(tags);
         }
-        return postDAO.listPosts(tab);
+        return posts;
     }
 
     /**
@@ -111,4 +117,17 @@ public class PostServiceImpl implements PostService {
         }
         return postId;
     }
+
+    @Override
+    public PostDetailVO getPostDetail(Integer postId) {
+        PostDetailVO postDetail = postDAO.getPostDetail(postId);
+        if (postDetail == null) {
+            return null;
+        }
+        // 为帖子设置标签
+        List<String> tags = postDAO.listPostTagsByPostId(postDetail.getId());
+        postDetail.setTags(tags);
+        return postDetail;
+    }
+
 }
