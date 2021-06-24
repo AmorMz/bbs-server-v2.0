@@ -3,11 +3,12 @@ package pers.muzi.bbs.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pers.muzi.bbs.common.result.Resp;
+import pers.muzi.bbs.entity.vo.post.PostListVO;
 import pers.muzi.bbs.service.PostService;
+
+import java.util.List;
 
 /**
  * @author AmorMz
@@ -31,5 +32,22 @@ public class PostController {
         return Resp.ok().data("total", countPost);
     }
 
+
+    /**
+     * 分页查询所有帖子
+     * @param tab   排序规则 latest/hot 最新/最热
+     * @param page  当前页
+     * @param limit 每页限制条数
+     * @return post集合
+     */
+    @ApiOperation("分页查询帖子")
+    @GetMapping("/{tab}")
+    public Resp listPost(@PathVariable String tab,
+                         @RequestParam("page") Integer page,
+                         @RequestParam("limit") Integer limit) {
+
+        List<PostListVO> listPost = postService.listPosts(tab, page, limit);
+        return Resp.ok().data("listPost", listPost);
+    }
 
 }

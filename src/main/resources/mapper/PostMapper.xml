@@ -7,16 +7,69 @@
 
     </resultMap>
 
+
+    <!--展示首页帖子 对应PostListVO-->
+    <resultMap id="postListMap" type="pers.muzi.bbs.entity.vo.post.PostListVO">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="comment_count" property="commentCount"/>
+        <result column="collect_count" property="collectCount"/>
+        <result column="view_count" property="viewCount"/>
+        <result column="like_count" property="likeCount"/>
+        <result column="top" property="top"/>
+        <result column="essence" property="essence"/>
+        <result column="create_time" property="createTime"/>
+        <result column="user_id" property="userId"/>
+        <result column="account" property="account"/>
+        <result column="nickname" property="nickname"/>
+        <result column="avatar" property="avatar"/>
+    </resultMap>
+
     <sql id="allField">
 
     </sql>
 
     <select id="countPost" resultType="java.lang.Integer">
-        SELECT
-            count(*)
-        FROM
-            bbs_post
-        WHERE
-            is_delete = 0
+        SELECT count(*)
+        FROM bbs_post
+        WHERE is_delete = 0
+    </select>
+
+    <select id="listPosts" resultMap="postListMap">
+        SELECT p.id,
+        p.title,
+        p.comment_count,
+        p.collect_count,
+        p.view_count,
+        p.like_count,
+        p.top,
+        p.essence,
+        p.create_time,
+        u.id AS user_id,
+        u.account,
+        u.nickname,
+        u.avatar
+        FROM bbs_post p,
+        bbs_user u
+        WHERE p.user_id = u.id
+        <choose>
+            <when test="tab != null and tab != '' and tab == 'hot'">
+                order by p.top desc, p.view_count desc
+            </when>
+            <otherwise>
+                order by p.top desc, p.create_time desc
+            </otherwise>
+        </choose>
+    </select>
+
+
+    <select id="listPostTagsByPostId" resultType="java.lang.String">
+        SELECT t.`name`
+        FROM bbs_post p,
+             bbs_tag t,
+             bbs_post_tag pt
+        WHERE t.id = pt.id
+          AND p.id = pt.post_id
+          AND p.id = #{postId}
     </select>
 </mapper>

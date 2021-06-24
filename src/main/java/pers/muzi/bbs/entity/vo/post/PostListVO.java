@@ -1,6 +1,5 @@
-package pers.muzi.bbs.entity;
+package pers.muzi.bbs.entity.vo.post;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,28 +8,25 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author AmorMz
- * 帖子/文章实体类
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
 @ToString
-public class Post {
+public class PostListVO {
     @ApiModelProperty("帖子id")
     private Integer id;
 
     @ApiModelProperty("帖子标题")
     private String title;
 
-    @ApiModelProperty("帖子内容 markdown")
-    private String content;
-
-    @ApiModelProperty("作者id")
-    private String userId;
+    @ApiModelProperty("帖子标签")
+    private List<String> tags;
 
     @ApiModelProperty("评论数量")
     private Integer commentCount;
@@ -53,6 +49,17 @@ public class Post {
     @ApiModelProperty("创建时间")
     private Date createTime;
 
-    @ApiModelProperty("修改时间")
-    private Date modifyTime;
+    @ApiModelProperty("作者id")
+    private Integer userId;
+
+    @ApiModelProperty("作者账号")
+    private String account;
+
+    @ApiModelProperty("作者昵称")
+    private String nickname;
+
+    @ApiModelProperty("作者头像url")
+    private String avatar;
+
+
 }

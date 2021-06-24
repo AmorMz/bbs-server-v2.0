@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pers.muzi.bbs.common.result.Resp;
 import pers.muzi.bbs.entity.Billboard;
-import pers.muzi.bbs.entity.vo.BillboardVO;
+import pers.muzi.bbs.entity.vo.billboard.BillboardVO;
 import pers.muzi.bbs.service.BillboardService;
 
 import java.util.Date;

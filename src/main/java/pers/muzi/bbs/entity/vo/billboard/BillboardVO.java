@@ -1,4 +1,4 @@
-package pers.muzi.bbs.entity.vo;
+package pers.muzi.bbs.entity.vo.billboard;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
