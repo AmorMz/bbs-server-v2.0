@@ -47,7 +47,7 @@ public class PostController {
                          @RequestParam("limit") Integer limit) {
 
         List<PostListVO> listPost = postService.listPosts(tab, page, limit);
-        return Resp.ok().data("listPost", listPost);
+        return Resp.ok().data("posts", listPost);
     }
 
 }
