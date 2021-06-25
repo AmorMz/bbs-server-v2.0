@@ -11,6 +11,7 @@ import java.util.Date;
 
 /**
  * @author AmorMz
+ * 标签实体
  */
 @Data
 @NoArgsConstructor

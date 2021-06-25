@@ -1,5 +1,6 @@
 package pers.muzi.bbs.handler;
 
+import io.jsonwebtoken.ClaimJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import pers.muzi.bbs.common.constant.RespCode;
 import pers.muzi.bbs.common.result.Resp;
 import pers.muzi.bbs.exception.global.ParamException;
 
@@ -20,6 +22,8 @@ import java.util.Objects;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+
+    // -------------------参数校验-------------------
 
     /**
      * 参数校验统一处理
@@ -65,6 +69,27 @@ public class GlobalExceptionHandler {
                 .message("参数有误!");
     }
 
+
+    // -------------------jwt异常-------------------
+
+    /**
+     * token出现问题 统统重新登录
+     */
+    @ExceptionHandler(ClaimJwtException.class)
+    public Resp claimJwtExceptionHandler(ClaimJwtException e) {
+        log.error(e.getMessage(), e);
+        return Resp
+                .error()
+                .code(RespCode.UNAUTHORIZED)
+                .message("登录已过期，请重新登录");
+    }
+
+
+
+
+
+
+    // -------------------未知异常-------------------
     /**
      * 未知异常处理 置底
      */

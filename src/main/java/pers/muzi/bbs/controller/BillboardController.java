@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pers.muzi.bbs.annotation.LoginRequired;
 import pers.muzi.bbs.common.result.Resp;
 import pers.muzi.bbs.entity.Billboard;
 import pers.muzi.bbs.entity.vo.billboard.BillboardVO;
@@ -27,6 +28,7 @@ public class BillboardController {
 
     @ApiOperation(value = "获取最新系统公告")
     @GetMapping
+    @LoginRequired
     public Resp getBillboard() {
         Billboard billboard = billboardService.getBillboard();
         // 暂无公告返回默认公告

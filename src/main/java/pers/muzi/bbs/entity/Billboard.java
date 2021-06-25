@@ -11,7 +11,7 @@ import java.util.Date;
 
 /**
  * @author AmorMz
- * 系统公告实体类
+ * 系统公告实体
  */
 @Data
 @NoArgsConstructor

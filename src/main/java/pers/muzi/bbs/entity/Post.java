@@ -12,7 +12,7 @@ import java.util.Date;
 
 /**
  * @author AmorMz
- * 帖子/文章实体类
+ * 帖子/文章实体
  */
 @Data
 @NoArgsConstructor
