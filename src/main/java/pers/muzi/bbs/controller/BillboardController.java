@@ -28,7 +28,6 @@ public class BillboardController {
 
     @ApiOperation(value = "获取最新系统公告")
     @GetMapping
-    @LoginRequired
     public Resp getBillboard() {
         Billboard billboard = billboardService.getBillboard();
         // 暂无公告返回默认公告
