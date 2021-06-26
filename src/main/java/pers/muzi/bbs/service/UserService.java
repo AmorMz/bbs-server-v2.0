@@ -45,4 +45,11 @@ public interface UserService {
      * @param userId 被取关用户
      */
     void unfollow(Integer loginId, Integer userId);
+
+    /**
+     * 根据用户id查询用户
+     * @param id 用户id
+     * @return User
+     */
+    User getUserById(Integer id);
 }

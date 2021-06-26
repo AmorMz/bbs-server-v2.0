@@ -65,6 +65,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 用户登录业务
+     *
      * @param loginDTO 登录DTO
      * @return token
      */
@@ -73,6 +74,9 @@ public class UserServiceImpl implements UserService {
         User user = userDAO.getUserByAccount(loginDTO.getAccount());
         if (user == null) {
             throw new UserException("用户不存在！请检查您的用户名");
+        }
+        if (!user.getStatus()) {
+            throw new UserException("您的账号被禁用，暂时无法登录");
         }
         // 获取密码盐 进行校验
         String password = loginDTO.getPassword() + user.getSalt();
@@ -90,8 +94,9 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 判断当前登录用户是否关注userid用户
+     *
      * @param loginId 当前登录用户id
-     * @param userId 被关注用户id
+     * @param userId  被关注用户id
      * @return boolean 是否关注
      */
     @Override
@@ -103,8 +108,9 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 用户关注
+     *
      * @param loginId 当前登录用户id
-     * @param userId 被关注用户id
+     * @param userId  被关注用户id
      */
     @Override
     public void follow(Integer loginId, Integer userId) {
@@ -114,11 +120,23 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 取消关注
+     *
      * @param loginId 当前登陆用户
-     * @param userId 被取关用户
+     * @param userId  被取关用户
      */
     @Override
     public void unfollow(Integer loginId, Integer userId) {
         userDAO.deleteFollow(loginId, userId);
+    }
+
+    /**
+     * 根据id查询用户
+     *
+     * @param id 用户id
+     * @return User
+     */
+    @Override
+    public User getUserById(Integer id) {
+        return userDAO.getUserById(id);
     }
 }

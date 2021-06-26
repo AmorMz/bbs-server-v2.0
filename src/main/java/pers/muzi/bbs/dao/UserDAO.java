@@ -23,7 +23,7 @@ public interface UserDAO {
 
 
     /**
-     * 根据昵称查询用户信息
+     * 根据昵称查询用户信息 封禁的用户也需要查询
      *
      * @param nickname 昵称
      * @return 用户实体
@@ -59,4 +59,11 @@ public interface UserDAO {
      * @param userId 被取关用户id
      */
     void deleteFollow(@Param("loginId") Integer loginId, @Param("userId") Integer userId);
+
+    /**
+     * 根据用户id查询用户 封禁的也需要查询
+     * @param id 用户id
+     * @return User
+     */
+    User getUserById(Integer id);
 }
