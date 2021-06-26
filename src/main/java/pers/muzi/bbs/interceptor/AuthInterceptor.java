@@ -48,7 +48,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (annotation != null) {
             // 存在注解 需要登陆 进行登录验证
 
-            /**
+            /*
              请求头中Authorization格式为 Bearer token
              如果不携带token get到的是字符串undefined
              */
@@ -66,7 +66,7 @@ public class AuthInterceptor implements HandlerInterceptor {
                 return false;
             }
 
-            /**
+            /*
              工具类get信息之前会进行jwt验签 异常由统一异常进行处理
              获取当前登录用户id、role
              */
