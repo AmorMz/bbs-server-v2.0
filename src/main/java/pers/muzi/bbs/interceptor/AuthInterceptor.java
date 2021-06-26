@@ -49,8 +49,8 @@ public class AuthInterceptor implements HandlerInterceptor {
             // 存在注解 需要登陆 进行登录验证
 
             /**
-             * 请求头中Authorization格式为 Bearer token
-             * 如果不携带token get到的是字符串undefined
+             请求头中Authorization格式为 Bearer token
+             如果不携带token get到的是字符串undefined
              */
             String bearer = request.getHeader("Authorization");
             if (!StringUtils.hasLength(bearer)) {
@@ -60,15 +60,15 @@ public class AuthInterceptor implements HandlerInterceptor {
 
             // 去掉 Bearer和空格拿到token
             String token = bearer.substring(7);
-
-            if ("".equals(token) || "undefined".equals(token)) {
+            String undefined = "undefined";
+            if ("".equals(token) || token.equalsIgnoreCase(undefined)) {
                 error(response);
                 return false;
             }
 
             /**
-             * 工具类get信息之前会进行jwt验签 异常由统一异常进行处理
-             * 获取当前登录用户id、role
+             工具类get信息之前会进行jwt验签 异常由统一异常进行处理
+             获取当前登录用户id、role
              */
             Integer userId = JwtUtil.getIdByJWT(token);
             Integer role = JwtUtil.getRoleByJWT(token);
