@@ -21,6 +21,7 @@ public class VerifyCodeRandomUtils extends RandomUtils {
 
     /**
      * 随机字符串
+     *
      * @param length 生成字符串的长度
      * @return 随机字符串
      */
@@ -34,6 +35,7 @@ public class VerifyCodeRandomUtils extends RandomUtils {
 
     /**
      * 随机数串
+     *
      * @param length 长度
      * @return 随机数串
      */

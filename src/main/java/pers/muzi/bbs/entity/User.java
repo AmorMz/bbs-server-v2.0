@@ -50,8 +50,8 @@ public class User {
     @ApiModelProperty("个人简介")
     private String about;
 
-    @ApiModelProperty("状态 0-正常 1-封禁")
-    private Integer status;
+    @ApiModelProperty("是否封禁")
+    private Boolean status;
 
     @ApiModelProperty("用户角色 0-普通用户 1-admin")
     private Integer role;

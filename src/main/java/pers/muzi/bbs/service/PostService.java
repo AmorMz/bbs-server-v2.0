@@ -46,6 +46,7 @@ public interface PostService {
 
     /**
      * 个人中心展示帖子 根据用户账号查询
+     *
      * @param account 用户账号
      * @return List<PostPersonalVO>
      */

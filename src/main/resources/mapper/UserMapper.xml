@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.muzi.bbs.dao.UserDAO">
+
+    <!--user实体类全部属性-->
+    <resultMap id="userDetailMap" type="pers.muzi.bbs.entity.User">
+        <id column="id" property="id"/>
+        <result column="account" property="account"/>
+        <result column="nickname" property="nickname"/>
+        <result column="password" property="password"/>
+        <result column="salt" property="salt"/>
+        <result column="avatar" property="avatar"/>
+        <result column="email" property="email"/>
+        <result column="phone" property="phone"/>
+        <result column="score" property="score"/>
+        <result column="about" property="about"/>
+        <result column="status" property="status"/>
+        <result column="role" property="role"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+        <result column="is_delete" property="delete"/>
+    </resultMap>
+
+    <sql id="allField">
+        id
+        , account, nickname, password, salt, avatar, email, phone, score, about, status, role, create_time, modify_time, is_delete
+    </sql>
+
+    <sql id="userKey">
+        <trim suffixOverrides=",">
+            <if test="id != null and id != ''">
+                id,
+            </if>
+            <if test="account != null and account != ''">
+                account,
+            </if>
+            <if test="nickname != null and nickname != ''">
+                nickname,
+            </if>
+            <if test="password != null and password != ''">
+                password,
+            </if>
+            <if test="salt != null and salt != ''">
+                salt,
+            </if>
+            <if test="phone != null and phone != ''">
+                phone,
+            </if>
+            <if test="avatar != null and avatar != ''">
+                avatar,
+            </if>
+            <if test="email != null and email != ''">
+                email,
+            </if>
+            <if test="score != null and score != ''">
+                score,
+            </if>
+            <if test="about != null and about != ''">
+                about,
+            </if>
+            <if test="status != null and status != ''">
+                status,
+            </if>
+            <if test="role != null and role != ''">
+                role,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifyTime != null">
+                modify_time,
+            </if>
+            <if test="delete != null and delete != ''">
+                is_delete,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="userValue">
+        <trim suffixOverrides=",">
+            <if test="id != null and id != ''">
+                #{id},
+            </if>
+            <if test="account != null and account != ''">
+                #{account},
+            </if>
+            <if test="nickname != null and nickname != ''">
+                #{nickname},
+            </if>
+            <if test="password != null and password != ''">
+                #{password},
+            </if>
+            <if test="salt != null and salt != ''">
+                #{salt},
+            </if>
+            <if test="avatar != null and avatar != ''">
+                #{avatar},
+            </if>
+            <if test="email != null and email != ''">
+                #{email},
+            </if>
+            <if test="phone != null and phone != ''">
+                #{phone},
+            </if>
+            <if test="score != null and score != ''">
+                #{score},
+            </if>
+            <if test="about != null and about != ''">
+                #{about},
+            </if>
+            <if test="status != null and status != ''">
+                #{status},
+            </if>
+            <if test="role != null and role != ''">
+                #{role},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="modifyTime != null">
+                #{modifyTime},
+            </if>
+            <if test="delete != null and delete != ''">
+                #{delete},
+            </if>
+        </trim>
+    </sql>
+    <select id="getUserByAccount" resultMap="userDetailMap">
+        SELECT
+        <include refid="allField"/>
+        FROM
+        bbs_user
+        WHERE
+        account = #{account}
+    </select>
+
+    <select id="getUserByNickname" resultMap="userDetailMap">
+        SELECT
+        <include refid="allField"/>
+        FROM
+        bbs_user
+        WHERE
+        nickname = #{nickname}
+    </select>
+
+    <insert id="insertUser" parameterType="pers.muzi.bbs.entity.User">
+        INSERT INTO bbs_user (<include refid="userKey"/>)
+        VALUES (<include refid="userValue"/>)
+    </insert>
+</mapper>

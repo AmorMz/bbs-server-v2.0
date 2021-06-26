@@ -2,8 +2,6 @@ package pers.muzi.bbs.handler;
 
 import io.jsonwebtoken.ClaimJwtException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,7 +9,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import pers.muzi.bbs.common.constant.RespCode;
 import pers.muzi.bbs.common.result.Resp;
-import pers.muzi.bbs.exception.global.ParamException;
+import pers.muzi.bbs.exception.ParamException;
+import pers.muzi.bbs.exception.UserException;
 
 import java.util.Objects;
 
@@ -85,11 +84,23 @@ public class GlobalExceptionHandler {
     }
 
 
+    // -------------------用户异常-------------------
 
-
+    /**
+     * token出现问题 统统重新登录
+     */
+    @ExceptionHandler(UserException.class)
+    public Resp userExceptionHandler(UserException e) {
+        log.error(e.getMessage(), e);
+        return Resp
+                .error()
+                .code(RespCode.ERROR)
+                .message(e.getMessage());
+    }
 
 
     // -------------------未知异常-------------------
+
     /**
      * 未知异常处理 置底
      */

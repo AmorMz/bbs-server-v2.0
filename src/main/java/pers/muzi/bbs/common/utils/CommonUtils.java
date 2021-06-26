@@ -28,6 +28,7 @@ public class CommonUtils {
 
     /**
      * MD5加密字符串str
+     *
      * @param str 原字符串
      * @return 加密后串
      */

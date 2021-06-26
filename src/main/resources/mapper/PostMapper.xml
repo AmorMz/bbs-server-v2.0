@@ -53,7 +53,7 @@
         <result column="create_time" property="createTime"/>
     </resultMap>
 
-    <sql id="key">
+    <sql id="postKey">
         <trim suffixOverrides=",">
             <if test="id != null and id != ''">
                 id,
@@ -94,7 +94,7 @@
         </trim>
     </sql>
 
-    <sql id="value">
+    <sql id="postValue">
         <trim suffixOverrides=",">
             <if test="id != null and id != ''">
                 #{id},
@@ -182,9 +182,9 @@
 
     <insert id="insertPost" parameterType="pers.muzi.bbs.entity.Post" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO bbs_post
-        (<include refid="key"/>)
+        (<include refid="postKey"/>)
         VALUES
-        (<include refid="value"/>)
+        (<include refid="postValue"/>)
     </insert>
 
     <select id="getTagIdByTagName" resultType="java.lang.Integer">

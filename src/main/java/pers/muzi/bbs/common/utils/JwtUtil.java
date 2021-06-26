@@ -49,7 +49,7 @@ public class JwtUtil {
      * @param userId 用户id
      * @return token
      */
-    public static String getToken(String userId, Integer role, Boolean rememberMe) {
+    public static String getToken(Integer userId, Integer role, Boolean rememberMe) {
         // 设置过期时间
         long expireTime = rememberMe ? REMEMBER_EXPIRATION_TIME : EXPIRATION_TIME;
         // 将id role 放入payload中

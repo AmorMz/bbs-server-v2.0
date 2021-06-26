@@ -15,6 +15,7 @@ import java.util.Random;
 
 /**
  * 验证码实现类
+ *
  * @author AmorMz
  */
 @Service

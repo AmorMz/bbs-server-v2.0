@@ -24,5 +24,4 @@ public class InterceptorConfig extends WebMvcConfigurationSupport {
     }
 
 
-
 }
