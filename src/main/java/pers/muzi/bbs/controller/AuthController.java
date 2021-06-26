@@ -5,7 +5,9 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import pers.muzi.bbs.annotation.LoginRequired;
 import pers.muzi.bbs.common.result.Resp;
+import pers.muzi.bbs.common.utils.JwtUtil;
 import pers.muzi.bbs.entity.dto.LoginDTO;
 import pers.muzi.bbs.entity.dto.RegisterDTO;
 import pers.muzi.bbs.exception.ParamException;
@@ -41,8 +43,9 @@ public class AuthController {
 
         // 注册
         userService.register(registerDTO);
-        return Resp.ok();
+        return Resp.ok().message("注册成功，即将跳转至登陆界面");
     }
+
 
     @ApiOperation("登录")
     @PostMapping("/login")
@@ -54,7 +57,17 @@ public class AuthController {
         }
         // 登录
         String token = userService.login(loginDTO);
-        return Resp.ok().data("token", token);
+        // token过期时间
+        long exp = loginDTO.getRememberMe() ? JwtUtil.getRememberExpirationTime() : JwtUtil.getExpirationTime();
+        return Resp.ok().data("token", token).data("exp", exp);
+    }
+
+
+    @ApiOperation("退出登录")
+    @GetMapping("/logout")
+    @LoginRequired
+    public Resp logout() {
+        return Resp.ok().message("退出成功");
     }
 
 }
