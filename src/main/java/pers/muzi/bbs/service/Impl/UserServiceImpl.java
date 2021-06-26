@@ -63,6 +63,11 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * 用户登录业务
+     * @param loginDTO 登录DTO
+     * @return token
+     */
     @Override
     public String login(LoginDTO loginDTO) {
         User user = userDAO.getUserByAccount(loginDTO.getAccount());

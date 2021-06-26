@@ -100,11 +100,11 @@ public class AuthInterceptor implements HandlerInterceptor {
         ROLE.remove();
     }
 
-    public Integer getId() {
+    public static Integer getId() {
         return USER_ID.get();
     }
 
-    public Integer getRole() {
+    public static Integer getRole() {
         return ROLE.get();
     }
 }

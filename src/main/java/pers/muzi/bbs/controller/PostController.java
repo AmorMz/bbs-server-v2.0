@@ -11,6 +11,7 @@ import pers.muzi.bbs.entity.dto.PostDTO;
 import pers.muzi.bbs.entity.vo.post.PostDetailVO;
 import pers.muzi.bbs.entity.vo.post.PostListVO;
 import pers.muzi.bbs.entity.vo.post.PostPersonalVO;
+import pers.muzi.bbs.interceptor.AuthInterceptor;
 import pers.muzi.bbs.service.PostService;
 
 import java.util.List;
@@ -68,7 +69,7 @@ public class PostController {
     @LoginRequired
     public Resp publish(@RequestBody @Validated PostDTO postDTO) {
         // 获取当前登录用户id
-        Integer authorId = 1;
+        Integer authorId = AuthInterceptor.getId();
         Integer postId = postService.publishPost(postDTO, authorId);
         return Resp.ok().message("发表成功!即将跳转至详情界面").data("postId", postId);
     }

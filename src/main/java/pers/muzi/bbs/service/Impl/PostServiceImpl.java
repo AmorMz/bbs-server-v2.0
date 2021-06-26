@@ -119,6 +119,12 @@ public class PostServiceImpl implements PostService {
         return postId;
     }
 
+    /**
+     * 展示帖子详情
+     *
+     * @param postId 帖子id
+     * @return PostDetailVO
+     */
     @Override
     public PostDetailVO getPostDetail(Integer postId) {
         PostDetailVO postDetail = postDAO.getPostDetail(postId);
@@ -132,6 +138,14 @@ public class PostServiceImpl implements PostService {
         return postDetail;
     }
 
+    /**
+     * 个人中心查询帖子
+     *
+     * @param account 用户账号
+     * @param page    当前页
+     * @param limit   每页条数
+     * @return PostPersonalVO
+     */
     @Override
     public List<PostPersonalVO> listPersonalPosts(String account, Integer page, Integer limit) {
         // 分页
