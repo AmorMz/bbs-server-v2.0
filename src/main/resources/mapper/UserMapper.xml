@@ -24,8 +24,8 @@
     </resultMap>
 
     <sql id="allField">
-        id
-        , account, nickname, password, salt, avatar, email, phone, score, about, status, role, create_time, modify_time, is_delete
+        id, account, nickname, password, salt, avatar, email, phone, score, about, status, role, create_time,
+        modify_time, is_delete
     </sql>
 
     <sql id="userKey">
@@ -127,6 +127,7 @@
             </if>
         </trim>
     </sql>
+
     <select id="getUserByAccount" resultMap="userDetailMap">
         SELECT
         <include refid="allField"/>
@@ -149,4 +150,24 @@
         INSERT INTO bbs_user (<include refid="userKey"/>)
         VALUES (<include refid="userValue"/>)
     </insert>
+
+    <select id="validateFollow" resultType="java.lang.Integer">
+        SELECT id
+        FROM bbs_follow
+        WHERE parent_id = #{userId}
+          AND follower_id = #{loginId}
+    </select>
+
+    <insert id="insertFollow">
+        INSERT INTO bbs_follow (id, parent_id, follower_id, create_time)
+        values (null, #{userId}, #{loginId}, NOW())
+    </insert>
+
+    <delete id="deleteFollow">
+        DELETE
+        FROM bbs_follow
+        where follower_id = #{loginId}
+          AND parent_id = #{userId}
+    </delete>
+
 </mapper>

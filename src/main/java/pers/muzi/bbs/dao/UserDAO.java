@@ -37,4 +37,26 @@ public interface UserDAO {
      * @param user 用户实体
      */
     void insertUser(User user);
+
+    /**
+     * 判断当前登录用户是否关注userid用户
+     * @param loginId 当前登录用户id
+     * @param userId 被关注用户id
+     * @return 记录的id 返回空则未关注
+     */
+    Integer validateFollow(@Param("loginId") Integer loginId, @Param("userId") Integer userId);
+
+    /**
+     * 关注
+     * @param loginId 当前登录用户id
+     * @param userId 被关注用户id
+     */
+    void insertFollow(@Param("loginId") Integer loginId, @Param("userId") Integer userId);
+
+    /**
+     * 取消关注
+     * @param loginId 当前登录用户id
+     * @param userId 被取关用户id
+     */
+    void deleteFollow(@Param("loginId") Integer loginId, @Param("userId") Integer userId);
 }

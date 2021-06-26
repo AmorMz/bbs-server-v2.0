@@ -59,7 +59,10 @@ public class AuthController {
         String token = userService.login(loginDTO);
         // token过期时间
         long exp = loginDTO.getRememberMe() ? JwtUtil.getRememberExpirationTime() : JwtUtil.getExpirationTime();
-        return Resp.ok().data("token", token).data("exp", exp);
+        // 过期时间转换成天返回给前端
+        return Resp.ok()
+                .data("token", token)
+                .data("exp", exp / 1000 / 60 / 60 / 24);
     }
 
 

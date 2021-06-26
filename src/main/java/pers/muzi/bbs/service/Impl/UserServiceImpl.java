@@ -86,4 +86,39 @@ public class UserServiceImpl implements UserService {
                 .getToken(user.getId(), user.getRole(), loginDTO.getRememberMe());
 
     }
+
+
+    /**
+     * 判断当前登录用户是否关注userid用户
+     * @param loginId 当前登录用户id
+     * @param userId 被关注用户id
+     * @return boolean 是否关注
+     */
+    @Override
+    public Boolean validateFollow(Integer loginId, Integer userId) {
+        Integer id = userDAO.validateFollow(loginId, userId);
+        return id != null;
+    }
+
+
+    /**
+     * 用户关注
+     * @param loginId 当前登录用户id
+     * @param userId 被关注用户id
+     */
+    @Override
+    public void follow(Integer loginId, Integer userId) {
+        userDAO.insertFollow(loginId, userId);
+    }
+
+
+    /**
+     * 取消关注
+     * @param loginId 当前登陆用户
+     * @param userId 被取关用户
+     */
+    @Override
+    public void unfollow(Integer loginId, Integer userId) {
+        userDAO.deleteFollow(loginId, userId);
+    }
 }
