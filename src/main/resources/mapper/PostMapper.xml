@@ -158,7 +158,7 @@
         u.avatar
         FROM bbs_post p,
         bbs_user u
-        WHERE p.user_id = u.id
+        WHERE p.user_id = u.id and p.is_delete = 0
         <choose>
             <when test="tab != null and tab != '' and tab == 'hot'">
                 order by p.top desc, p.view_count desc

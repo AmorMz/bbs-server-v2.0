@@ -1,5 +1,6 @@
 package pers.muzi.bbs.service.Impl;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,12 +47,10 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public List<PostListVO> listPosts(String tab, Integer page, Integer limit) {
-        if (page == 0 || limit == 0) {
-            throw new ParamException("参数有误");
-        }
         // 分页
         PageHelper.startPage(page, limit);
         List<PostListVO> posts = postDAO.listPosts(tab);
+        System.out.println("帖子集合: " + posts);
         if (posts == null) {
             return null;
         }

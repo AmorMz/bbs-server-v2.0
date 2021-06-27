@@ -24,7 +24,7 @@ public class LoginDTO {
     @ApiModelProperty("账号")
     @NotBlank(message = "账号不能为空")
     @Size(min = 5, max = 10, message = "账号长度限制为5到10位")
-    @Pattern(regexp = "^[A-Za-z0-9]+$", message = "账号只能包含字母、数字、_和-")
+    @Pattern(regexp = "^[A-Za-z0-9]+$", message = "账号只能包含字母、数字")
     private String account;
 
     @ApiModelProperty("密码")

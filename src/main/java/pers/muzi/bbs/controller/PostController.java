@@ -22,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/post")
 @Api(tags = "帖子接口")
+@CrossOrigin
 public class PostController {
 
     @Autowired

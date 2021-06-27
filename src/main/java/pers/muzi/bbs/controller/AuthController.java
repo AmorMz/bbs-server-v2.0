@@ -22,6 +22,7 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/auth")
 @Api(tags = "认证接口")
+@CrossOrigin
 public class AuthController {
 
     @Autowired

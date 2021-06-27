@@ -3,10 +3,7 @@ package pers.muzi.bbs.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pers.muzi.bbs.annotation.LoginRequired;
 import pers.muzi.bbs.common.result.Resp;
 import pers.muzi.bbs.interceptor.AuthInterceptor;
@@ -20,6 +17,7 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/relationship")
 @Api(tags = "用户关系")
+@CrossOrigin
 public class RelationshipController {
 
     @Autowired
@@ -28,7 +26,7 @@ public class RelationshipController {
     @ApiOperation("判断用户是否关注")
     @GetMapping("/validate/{userId}")
     @LoginRequired
-    public Resp validate(@PathVariable("userId") Integer userId) {
+    public Resp hasFollow(@PathVariable("userId") Integer userId) {
         // 当前登录用户id
         Integer loginId = AuthInterceptor.getId();
         Boolean hasFollow = userService.validateFollow(loginId, userId);
@@ -58,7 +56,7 @@ public class RelationshipController {
     @ApiOperation("取消关注")
     @GetMapping("/unfollow/{userId}")
     @LoginRequired
-    public Resp unfollow(@PathVariable("userId") Integer userId) {
+    public Resp unFollow(@PathVariable("userId") Integer userId) {
         // 当前登录用户id
         Integer loginId = AuthInterceptor.getId();
         if (!Objects.equals(userId, loginId)) {
