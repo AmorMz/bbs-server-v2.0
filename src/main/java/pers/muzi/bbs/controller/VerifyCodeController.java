@@ -41,7 +41,7 @@ public class VerifyCodeController {
         // 设置过期时间 5分钟
         session.setMaxInactiveInterval(5 * 60);
         // 图片编码为Base64
-        String codeBase64 = VerifyCodeUtils.getVerifyCodeBase64(verifyCode.getImgBytes());
+        String codeBase64 = "data:image/png;base64," + VerifyCodeUtils.getVerifyCodeBase64(verifyCode.getImgBytes());
         return Resp.ok().data("verifyCode", codeBase64);
     }
 
