@@ -8,9 +8,9 @@ import pers.muzi.bbs.entity.VerifyCode;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.beans.Encoder;
+import java.io.*;
+import java.util.Base64;
 import java.util.Random;
 
 /**
@@ -115,5 +115,15 @@ public class VerifyCodeUtils {
             //设置x y 坐标
             g.drawString(String.valueOf(charArray[i]), 15 * i + 5, 19 + VerifyCodeRandomUtils.nextInt(8));
         }
+    }
+
+
+    /**
+     * 将图片加密为base64传输
+     */
+    public static String getVerifyCodeBase64(byte[] data) {
+        // 加密
+        Base64.Encoder encoder = Base64.getEncoder();
+        return encoder.encodeToString(data);
     }
 }
