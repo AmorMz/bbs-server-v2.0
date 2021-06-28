@@ -31,11 +31,11 @@ public class AuthController {
     @ApiOperation("注册")
     @PostMapping("/register")
     public Resp register(@RequestBody @Validated RegisterDTO registerDTO, HttpServletRequest request) {
-        // 判断验证码输入是否正确
-        String code = (String) request.getSession().getAttribute("code");
-        if (!registerDTO.getVerifyCode().equalsIgnoreCase(code)) {
-            throw new ParamException("验证码错误或已过期，请重新获取");
-        }
+//        // 判断验证码输入是否正确
+//        String code = (String) request.getSession().getAttribute("code");
+//        if (!registerDTO.getVerifyCode().equalsIgnoreCase(code)) {
+//            throw new ParamException("验证码错误或已过期，请重新获取");
+//        }
 
         // 校验两次密码输入是否一致
         if (!Objects.equals(registerDTO.getPassword(), registerDTO.getCheckPass())) {
@@ -51,11 +51,12 @@ public class AuthController {
     @ApiOperation("登录")
     @PostMapping("/login")
     public Resp login(@RequestBody @Validated LoginDTO loginDTO, HttpServletRequest request) {
-        // 判断验证码输入是否正确
-        String code = (String) request.getSession().getAttribute("code");
-        if (!loginDTO.getVerifyCode().equalsIgnoreCase(code)) {
-            throw new ParamException("验证码错误或已过期，请重新获取");
-        }
+//        判断验证码输入是否正确
+//        String code = (String) request.getSession().getAttribute("code");
+//        if (!loginDTO.getVerifyCode().equalsIgnoreCase(code)) {
+//            throw new ParamException("验证码错误或已过期，请重新获取");
+//        }
+
         // 登录
         String token = userService.login(loginDTO);
         // token过期时间

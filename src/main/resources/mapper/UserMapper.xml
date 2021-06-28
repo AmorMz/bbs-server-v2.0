@@ -159,7 +159,9 @@
     </select>
 
     <select id="getUserById" resultType="pers.muzi.bbs.entity.User">
-        SELECT <include refid="allField"/> FROM bbs_user
+        SELECT
+        <include refid="allField"/>
+        FROM bbs_user WHERE id = #{id}
     </select>
 
     <insert id="insertFollow">

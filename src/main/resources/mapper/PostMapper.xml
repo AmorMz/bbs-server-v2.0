@@ -28,7 +28,6 @@
     <!--展示帖子详情 对应PostDetailVO-->
     <resultMap id="postDetailMap" type="pers.muzi.bbs.entity.vo.post.PostDetailVO">
         <id column="id" property="id"/>
-        <result column="user_id" property="userId"/>
         <result column="title" property="title"/>
         <result column="content" property="content"/>
         <result column="comment_count" property="commentCount"/>
@@ -38,6 +37,14 @@
         <result column="top" property="top"/>
         <result column="essence" property="essence"/>
         <result column="modify_time" property="modifyTime"/>
+        <association property="author">
+            <id column="user_id" property="id"/>
+            <result column="account" property="account"/>
+            <result column="nickname" property="nickname"/>
+            <result column="avatar" property="avatar"/>
+            <result column="post_count" property="postCount"/>
+            <result column="follower_count" property="followerCount"/>
+        </association>
     </resultMap>
 
     <!--个人中心展示帖子-->
@@ -211,20 +218,31 @@
     </insert>
 
     <select id="getPostDetail" resultMap="postDetailMap">
-        SELECT id,
-               user_id,
-               title,
-               content,
-               comment_count,
-               collect_count,
-               view_count,
-               like_count,
-               top,
-               essence,
-               modify_time
-        FROM bbs_post
-        WHERE is_delete = 0
-          AND id = #{postId}
+        SELECT
+            p.id,
+            p.user_id as user_id,
+            p.title,
+            P.content,
+            P.comment_count,
+            P.collect_count,
+            P.view_count,
+            P.like_count,
+            P.top,
+            P.essence,
+            P.modify_time,
+            u.nickname,
+            u.avatar,
+            u.account,
+            ( SELECT count(*) FROM bbs_post WHERE user_id = u.id) AS post_count,
+            ( SELECT count(*) FROM bbs_follow WHERE parent_id = u.id ) AS follower_count
+
+        FROM
+            bbs_post p,
+            bbs_user u
+        WHERE
+            p.is_delete = 0
+          AND p.user_id = u.id
+          AND p.id = #{postId}
     </select>
 
     <select id="listPostsByAccount" resultMap="postPersonalMap">

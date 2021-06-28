@@ -3,6 +3,7 @@ package pers.muzi.bbs.service;
 import pers.muzi.bbs.entity.User;
 import pers.muzi.bbs.entity.dto.LoginDTO;
 import pers.muzi.bbs.entity.dto.RegisterDTO;
+import pers.muzi.bbs.entity.vo.user.AuthorVO;
 
 /**
  * @author AmorMz

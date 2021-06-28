@@ -94,7 +94,6 @@ public class GlobalExceptionHandler {
         log.error(e.getMessage(), e);
         return Resp
                 .error()
-                .code(RespCode.ERROR)
                 .message(e.getMessage());
     }
 

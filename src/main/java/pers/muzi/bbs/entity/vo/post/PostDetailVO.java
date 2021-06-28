@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import pers.muzi.bbs.entity.vo.user.AuthorVO;
 
 import java.util.Date;
 import java.util.List;
@@ -22,8 +23,8 @@ public class PostDetailVO {
     @ApiModelProperty("帖子id")
     private Integer id;
 
-    @ApiModelProperty("作者id")
-    private Integer userId;
+    @ApiModelProperty("作者信息")
+    private AuthorVO author;
 
     @ApiModelProperty("帖子标题")
     private String title;

@@ -8,6 +8,7 @@ import pers.muzi.bbs.dao.UserDAO;
 import pers.muzi.bbs.entity.User;
 import pers.muzi.bbs.entity.dto.LoginDTO;
 import pers.muzi.bbs.entity.dto.RegisterDTO;
+import pers.muzi.bbs.entity.vo.user.AuthorVO;
 import pers.muzi.bbs.exception.ParamException;
 import pers.muzi.bbs.exception.UserException;
 import pers.muzi.bbs.service.UserService;
@@ -75,13 +76,13 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new UserException("用户不存在！请检查您的用户名");
         }
-        if (!user.getStatus()) {
+        if (user.getStatus()) {
             throw new UserException("您的账号被禁用，暂时无法登录");
         }
         // 获取密码盐 进行校验
         String password = loginDTO.getPassword() + user.getSalt();
         String md5Password = CommonUtils.MD5(password);
-        if (Objects.equals(user.getPassword(), md5Password)) {
+        if (!Objects.equals(user.getPassword(), md5Password)) {
             throw new UserException("密码错误，请检查您的密码");
         }
 

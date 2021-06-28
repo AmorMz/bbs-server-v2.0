@@ -41,11 +41,11 @@ public class RelationshipController {
         // 当前登录用户id
         Integer loginId = AuthInterceptor.getId();
         if (Objects.equals(userId, loginId)) {
-            return Resp.ok().message("不能关注自己哦~");
+            return Resp.error().message("不能关注自己哦~");
         }
 
         if (userService.validateFollow(loginId, userId)) {
-            return Resp.ok().message("您已经关注他了~不能重复关注哦");
+            return Resp.error().message("您已经关注他了~不能重复关注哦");
         }
 
         userService.follow(loginId, userId);

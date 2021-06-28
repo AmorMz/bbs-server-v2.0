@@ -3,6 +3,7 @@ package pers.muzi.bbs.dao;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import pers.muzi.bbs.entity.User;
+import pers.muzi.bbs.entity.vo.user.AuthorVO;
 
 /**
  * @author AmorMz
@@ -65,5 +66,5 @@ public interface UserDAO {
      * @param id 用户id
      * @return User
      */
-    User getUserById(Integer id);
+    User getUserById(@Param("id") Integer id);
 }
