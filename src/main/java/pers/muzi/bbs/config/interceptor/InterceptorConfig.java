@@ -2,7 +2,6 @@ package pers.muzi.bbs.config.interceptor;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import pers.muzi.bbs.interceptor.AuthInterceptor;
 
@@ -19,6 +18,7 @@ public class InterceptorConfig extends WebMvcConfigurationSupport {
      */
     @Override
     protected void addInterceptors(InterceptorRegistry registry) {
+        // 用户认证
         registry.addInterceptor(new AuthInterceptor())
                 .addPathPatterns("/**");
     }

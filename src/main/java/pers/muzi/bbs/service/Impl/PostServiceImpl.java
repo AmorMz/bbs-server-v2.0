@@ -50,7 +50,6 @@ public class PostServiceImpl implements PostService {
         // 分页
         PageHelper.startPage(page, limit);
         List<PostListVO> posts = postDAO.listPosts(tab);
-        System.out.println("帖子集合: " + posts);
         if (posts == null) {
             return null;
         }

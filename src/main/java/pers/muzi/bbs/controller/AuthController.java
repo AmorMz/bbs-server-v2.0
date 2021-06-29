@@ -3,6 +3,7 @@ package pers.muzi.bbs.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pers.muzi.bbs.annotation.LoginRequired;
@@ -12,7 +13,6 @@ import pers.muzi.bbs.entity.dto.LoginDTO;
 import pers.muzi.bbs.entity.dto.RegisterDTO;
 import pers.muzi.bbs.exception.ParamException;
 import pers.muzi.bbs.service.UserService;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
@@ -51,7 +51,7 @@ public class AuthController {
     @ApiOperation("登录")
     @PostMapping("/login")
     public Resp login(@RequestBody @Validated LoginDTO loginDTO, HttpServletRequest request) {
-//        判断验证码输入是否正确
+//        // 判断验证码输入是否正确
 //        String code = (String) request.getSession().getAttribute("code");
 //        if (!loginDTO.getVerifyCode().equalsIgnoreCase(code)) {
 //            throw new ParamException("验证码错误或已过期，请重新获取");

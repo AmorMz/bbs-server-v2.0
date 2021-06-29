@@ -31,7 +31,7 @@ public class VerifyCodeController {
 
     @ApiOperation("获取验证码")
     @GetMapping("/code")
-    public Resp verifyCode(HttpServletRequest request) throws IOException {
+    public Resp verifyCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // 设置长宽
         VerifyCode verifyCode = verifyCodeUtils.generate(80, 36);
         String code = verifyCode.getCode();

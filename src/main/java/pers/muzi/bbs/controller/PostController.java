@@ -34,9 +34,10 @@ public class PostController {
      * @return total 帖子总数量
      */
     @ApiOperation("获取帖子总数量")
-    @GetMapping
+    @GetMapping("/count")
     public Resp count() {
         Integer countPost = postService.countPost();
+        System.out.println(countPost);
         return Resp.ok().data("total", countPost);
     }
 
