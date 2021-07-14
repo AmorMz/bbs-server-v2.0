@@ -7,10 +7,10 @@ import java.lang.annotation.Target;
 
 /**
  * @author AmorMz
- * 接口是否需要登录才能访问 拦截器实现
+ * 管理员身份校验 AOP实现
  */
-@Target(ElementType.METHOD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface LoginRequired {
+public @interface AdminRequired {
 
 }

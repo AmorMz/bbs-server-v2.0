@@ -8,7 +8,6 @@ import pers.muzi.bbs.dao.UserDAO;
 import pers.muzi.bbs.entity.User;
 import pers.muzi.bbs.entity.dto.LoginDTO;
 import pers.muzi.bbs.entity.dto.RegisterDTO;
-import pers.muzi.bbs.entity.vo.user.AuthorVO;
 import pers.muzi.bbs.exception.ParamException;
 import pers.muzi.bbs.exception.UserException;
 import pers.muzi.bbs.service.UserService;

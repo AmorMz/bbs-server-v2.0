@@ -3,9 +3,13 @@ package pers.muzi.bbs.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import pers.muzi.bbs.annotation.LoginRequired;
 import pers.muzi.bbs.common.result.Resp;
+import pers.muzi.bbs.entity.dto.CommentDTO;
 import pers.muzi.bbs.entity.vo.comment.CommentVO;
+import pers.muzi.bbs.interceptor.AuthInterceptor;
 import pers.muzi.bbs.service.CommentService;
 
 import java.util.List;
@@ -37,6 +41,17 @@ public class CommentController {
 
         List<CommentVO> comments = commentService.getComments(postId, page, limit);
         return Resp.ok().data("comments", comments);
+    }
+
+
+    @ApiOperation("发表评论")
+    @PostMapping
+    @LoginRequired
+    public Resp pushComment(@RequestBody @Validated CommentDTO commentDTO) {
+        System.out.println(commentDTO);
+        Integer userId = AuthInterceptor.getId();
+        commentService.publishComment(commentDTO, userId);
+        return Resp.ok();
     }
 
 

@@ -2,6 +2,8 @@ package pers.muzi.bbs.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import pers.muzi.bbs.entity.Comment;
+import pers.muzi.bbs.entity.dto.CommentDTO;
 import pers.muzi.bbs.entity.vo.comment.CommentVO;
 import pers.muzi.bbs.entity.vo.comment.ReplyVO;
 
@@ -33,4 +35,10 @@ public interface CommentDAO {
      * @return 楼中楼
      */
     List<ReplyVO> listReplyByCommentId(@Param("commentId") Integer commentId);
+
+    /**
+     * 插入一条评论
+     * @param comment 评论实体
+     */
+    void insertComment(Comment comment);
 }

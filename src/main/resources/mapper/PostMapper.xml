@@ -259,4 +259,24 @@
         WHERE user_id = (SELECT user_id FROM bbs_user WHERE account = #{account}) AND is_delete = 0
         ORDER BY create_time DESC
     </select>
+
+    <update id="setTopById">
+        UPDATE bbs_post SET TOP = 1 WHERE id = #{postId}
+    </update>
+
+    <update id="setEssenceById">
+        UPDATE bbs_post SET essence = 1 WHERE id = #{postId}
+    </update>
+
+    <update id="cancelTopById">
+        UPDATE bbs_post SET TOP = 0 WHERE id = #{postId}
+    </update>
+
+    <update id="cancelEssenceById">
+        UPDATE bbs_post SET essence = 0 WHERE id = #{postId}
+    </update>
+
+    <update id="deletePostById">
+        UPDATE bbs_post SET is_delete = 1 WHERE id = #{postId}
+    </update>
 </mapper>

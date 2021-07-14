@@ -81,6 +81,7 @@ public interface PostDAO {
      * 根据帖子id 查询
      *
      * @param postId 帖子id
+     * @return PostDetailVO 帖子详情
      */
     PostDetailVO getPostDetail(@Param("postId") Integer postId);
 
@@ -91,4 +92,34 @@ public interface PostDAO {
      * @return List<PostPersonalVO>
      */
     List<PostPersonalVO> listPostsByAccount(@Param("account") String account);
+
+    /**
+     * 置顶帖子
+     * @param postId 帖子id
+     */
+    void setTopById(@Param("postId") Integer postId);
+
+    /**
+     * 加精帖子
+     * @param postId 帖子id
+     */
+    void setEssenceById(@Param("postId") Integer postId);
+
+    /**
+     * 删除帖子
+     * @param postId 帖子id
+     */
+    void deletePostById(@Param("postId") Integer postId);
+
+    /**
+     * 取消加精
+     * @param postId 帖子id
+     */
+    void cancelTopById(@Param("postId") Integer postId);
+
+    /**
+     * 取消置顶
+     * @param postId 帖子id
+     */
+    void cancelEssenceById(@Param("postId") Integer postId);
 }

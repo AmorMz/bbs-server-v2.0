@@ -4,11 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
+import pers.muzi.bbs.annotation.AdminRequired;
 import pers.muzi.bbs.annotation.LoginRequired;
 import pers.muzi.bbs.common.constant.RespCode;
 import pers.muzi.bbs.common.result.Resp;
 import pers.muzi.bbs.common.utils.JwtUtil;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -43,11 +43,12 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         // 判断该请求处理方法是否存在LoginRequired注解
         HandlerMethod handlerMethod = (HandlerMethod) handler;
-        LoginRequired annotation = handlerMethod.getMethodAnnotation(LoginRequired.class);
+        LoginRequired loginRequired = handlerMethod.getMethodAnnotation(LoginRequired.class);
+        // 请求Controller是否存在AdminRequired注解
+        AdminRequired adminRequired = handlerMethod.getMethod().getDeclaringClass().getAnnotation(AdminRequired.class);
 
-        if (annotation != null) {
-            // 存在注解 需要登陆 进行登录验证
-
+        System.out.println(adminRequired != null);
+        if (loginRequired != null || adminRequired != null) {
             /*
              请求头中Authorization格式为 Bearer token
              如果不携带token get到的是字符串undefined
@@ -74,6 +75,13 @@ public class AuthInterceptor implements HandlerInterceptor {
             Integer role = JwtUtil.getRoleByJWT(token);
             USER_ID.set(userId);
             ROLE.set(role);
+
+            // 管理员身份验证
+            if (adminRequired != null && role == 0) {
+                permissionError(response);
+                return false;
+            }
+
             return true;
         } else {
             // 无需登录 放行请求
@@ -89,6 +97,17 @@ public class AuthInterceptor implements HandlerInterceptor {
                 .error()
                 .code(RespCode.UNAUTHORIZED)
                 .message("您还没有登录!或者登录过期，请重新登陆");
+        ObjectMapper objectMapper = new ObjectMapper();
+        response.getWriter().println(objectMapper.writeValueAsString(resp));
+    }
+
+    private void permissionError(HttpServletResponse response) throws IOException {
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json; charset=utf-8");
+        Resp resp = Resp
+                .error()
+                .code(RespCode.FORBIDDEN)
+                .message("权限不足，禁止访问");
         ObjectMapper objectMapper = new ObjectMapper();
         response.getWriter().println(objectMapper.writeValueAsString(resp));
     }

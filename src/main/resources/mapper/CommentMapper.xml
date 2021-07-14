@@ -4,54 +4,106 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="pers.muzi.bbs.dao.CommentDAO">
 
+    <sql id="commentKey">
+        <trim suffixOverrides=",">
+            <if test="id != null and id != ''">
+                id,
+            </if>
+            <if test="content != null and content != ''">
+                content,
+            </if>
+            <if test="userId != null and userId != ''">
+                user_id,
+            </if>
+            <if test="postId != null and postId != ''">
+                post_id,
+            </if>
+            <if test="targetId != null and targetId != ''">
+                target_id,
+            </if>
+            <if test="commentId != null and commentId != ''">
+                comment_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="commentValue">
+        <trim suffixOverrides=",">
+            <if test="id != null and id != ''">
+                #{id},
+            </if>
+            <if test="content != null and content != ''">
+                #{content},
+            </if>
+            <if test="userId != null and userId != ''">
+                #{userId},
+            </if>
+            <if test="postId != null and postId != ''">
+                #{postId},
+            </if>
+            <if test="targetId != null and targetId != ''">
+                #{targetId},
+            </if>
+            <if test="commentId != null and commentId != ''">
+                #{commentId},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+        </trim>
+    </sql>
+
     <select id="countCommentByPostId" resultType="java.lang.Integer">
-        SELECT
-            COUNT(*)
-        FROM
-            bbs_comment
-        WHERE
-            post_id = #{postId} AND target_id = 0 AND is_delete = 0
+        SELECT COUNT(*)
+        FROM bbs_comment
+        WHERE post_id = #{postId}
+          AND target_id = 0
+          AND is_delete = 0
     </select>
 
     <select id="listCommentByPostId" resultType="pers.muzi.bbs.entity.vo.comment.CommentVO">
-        SELECT
-            c.id,
-            c.content,
-            u.avatar,
-            u.account,
-            u.nickname,
-            u.create_time
-        FROM
-            bbs_comment c,
-            bbs_user u
-        WHERE
-            c.user_id = u.id
+        SELECT c.id,
+               c.content,
+               u.avatar,
+               u.account,
+               u.nickname,
+               c.create_time as createTime
+        FROM bbs_comment c,
+             bbs_user u
+        WHERE c.user_id = u.id
           AND c.target_id = 0
           AND c.post_id = #{postId}
           AND c.is_delete = 0
+        ORDER BY c.create_time
     </select>
 
 
     <select id="listReplyByCommentId" resultType="pers.muzi.bbs.entity.vo.comment.ReplyVO">
-        SELECT
-            c1.id,
-            c1.content,
-            c1.create_time,
-            u1.nickname AS fromNickname,
-            u1.account AS fromAccount,
-            u2.nickname AS toNickname,
-            u2.account AS toAccount
-        FROM
-            bbs_comment c1,
-            bbs_comment c2,
-            bbs_user u1,
-            bbs_user u2
-        WHERE
-            c1.comment_id = #{commentId}
+        SELECT c1.id,
+               c1.content,
+               c1.create_time,
+               u1.nickname AS fromNickname,
+               u1.account  AS fromAccount,
+               u2.nickname AS toNickname,
+               u2.account  AS toAccount
+        FROM bbs_comment c1,
+             bbs_comment c2,
+             bbs_user u1,
+             bbs_user u2
+        WHERE c1.comment_id = #{commentId}
           AND c1.target_id = c2.id
           AND c1.user_id = u1.id
           AND c2.user_id = u2.id
           AND c1.is_delete = 0
           AND c2.is_delete = 0
+        ORDER BY c1.create_time
     </select>
+
+    <insert id="insertComment" parameterType="pers.muzi.bbs.entity.Comment">
+        INSERT INTO bbs_comment (<include refid="commentKey"/>) VALUES (<include refid="commentValue"/>)
+    </insert>
+
 </mapper>

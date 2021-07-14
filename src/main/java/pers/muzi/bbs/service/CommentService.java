@@ -1,5 +1,6 @@
 package pers.muzi.bbs.service;
 
+import pers.muzi.bbs.entity.dto.CommentDTO;
 import pers.muzi.bbs.entity.vo.comment.CommentVO;
 
 import java.util.List;
@@ -26,4 +27,10 @@ public interface CommentService {
      * @return 评论VO
      */
     List<CommentVO> getComments(Integer postId, Integer page, Integer limit);
+
+    /**
+     * 发表评论
+     * @param commentDTO 评论DTO
+     */
+    void publishComment(CommentDTO commentDTO, Integer userId);
 }
