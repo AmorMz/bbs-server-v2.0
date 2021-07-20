@@ -12,7 +12,6 @@ import pers.muzi.bbs.entity.dto.PostDTO;
 import pers.muzi.bbs.entity.vo.post.PostDetailVO;
 import pers.muzi.bbs.entity.vo.post.PostListVO;
 import pers.muzi.bbs.entity.vo.post.PostPersonalVO;
-import pers.muzi.bbs.exception.ParamException;
 import pers.muzi.bbs.service.PostService;
 
 import java.util.Date;
@@ -149,6 +148,25 @@ public class PostServiceImpl implements PostService {
         // 分页
         PageHelper.startPage(page, limit);
         return postDAO.listPostsByAccount(account);
+    }
+
+    /**
+     * 本周热议初始化
+     */
+    @Override
+    public void initWeekRank() {
+        // 获取7天的发表文章
+
+        // 初始化文章的总评论量
+
+        // 缓存文章作者 id
+
+        // 并集
+    }
+
+    @Override
+    public void viewCount() {
+
     }
 
 }

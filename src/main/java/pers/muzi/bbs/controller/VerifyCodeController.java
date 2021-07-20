@@ -8,13 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pers.muzi.bbs.common.result.Resp;
-import pers.muzi.bbs.common.utils.VerifyCodeUtils;
-import pers.muzi.bbs.entity.VerifyCode;
+import pers.muzi.bbs.service.VerifyCodeService;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
+import java.util.Map;
 
 
 /**
@@ -26,24 +25,17 @@ import java.io.IOException;
 @CrossOrigin
 public class VerifyCodeController {
 
+
     @Autowired
-    private VerifyCodeUtils verifyCodeUtils;
+    private VerifyCodeService verifyCodeService;
 
     @ApiOperation("获取验证码")
     @GetMapping("/code")
-    public Resp verifyCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        // 设置长宽
-        VerifyCode verifyCode = verifyCodeUtils.generate(80, 36);
-        String code = verifyCode.getCode();
-        System.out.println("生成验证码: " + code);
-        // 放入session
-        HttpSession session = request.getSession();
-        session.setAttribute("code", code);
-        // 设置过期时间 5分钟
-        session.setMaxInactiveInterval(5 * 60);
-        // 图片编码为Base64
-        String codeBase64 = "data:image/png;base64," + VerifyCodeUtils.getVerifyCodeBase64(verifyCode.getImgBytes());
-        return Resp.ok().data("verifyCode", codeBase64);
+    public Resp verifyCode() {
+        Map<String, String> map = verifyCodeService.getVerifyCodeBase64();
+        return Resp.ok()
+                .data("code", map.get("codeBase64"))
+                .data("uuid", map.get("uuid"));
     }
 
 }

@@ -5,6 +5,8 @@ import pers.muzi.bbs.entity.dto.LoginDTO;
 import pers.muzi.bbs.entity.dto.RegisterDTO;
 import pers.muzi.bbs.entity.vo.user.AuthorVO;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author AmorMz
  */
@@ -53,4 +55,11 @@ public interface UserService {
      * @return User
      */
     User getUserById(Integer id);
+
+    /**
+     * 根据账号查询用户
+     * @param account
+     * @return
+     */
+    User getUserByAccount(String account);
 }

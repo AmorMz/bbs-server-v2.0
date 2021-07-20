@@ -8,7 +8,8 @@ import pers.muzi.bbs.annotation.AdminRequired;
 import pers.muzi.bbs.annotation.LoginRequired;
 import pers.muzi.bbs.common.constant.RespCode;
 import pers.muzi.bbs.common.result.Resp;
-import pers.muzi.bbs.common.utils.JwtUtil;
+import pers.muzi.bbs.common.utils.InterceptorUtils;
+import pers.muzi.bbs.common.utils.JwtUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -46,8 +47,6 @@ public class AuthInterceptor implements HandlerInterceptor {
         LoginRequired loginRequired = handlerMethod.getMethodAnnotation(LoginRequired.class);
         // 请求Controller是否存在AdminRequired注解
         AdminRequired adminRequired = handlerMethod.getMethod().getDeclaringClass().getAnnotation(AdminRequired.class);
-
-        System.out.println(adminRequired != null);
         if (loginRequired != null || adminRequired != null) {
             /*
              请求头中Authorization格式为 Bearer token
@@ -55,7 +54,7 @@ public class AuthInterceptor implements HandlerInterceptor {
              */
             String bearer = request.getHeader("Authorization");
             if (!StringUtils.hasLength(bearer)) {
-                error(response);
+                InterceptorUtils.error(response, "您还没有登录，请登陆后继续操作",RespCode.UNAUTHORIZED);
                 return false;
             }
 
@@ -63,22 +62,22 @@ public class AuthInterceptor implements HandlerInterceptor {
             String token = bearer.substring(7);
             String undefined = "undefined";
             if ("".equals(token) || token.equalsIgnoreCase(undefined)) {
-                error(response);
+                InterceptorUtils.error(response, "您还没有登录，请登陆后继续操作",RespCode.UNAUTHORIZED);
                 return false;
             }
 
-            /*
-             工具类get信息之前会进行jwt验签 异常由统一异常进行处理
-             获取当前登录用户id、role
+            /**
+             * 工具类get信息之前会进行jwt验签 异常由统一异常进行处理
+             * 获取当前登录用户id、role
              */
-            Integer userId = JwtUtil.getIdByJWT(token);
-            Integer role = JwtUtil.getRoleByJWT(token);
+            Integer userId = JwtUtils.getIdByJWT(token);
+            Integer role = JwtUtils.getRoleByJWT(token);
             USER_ID.set(userId);
             ROLE.set(role);
 
             // 管理员身份验证
             if (adminRequired != null && role == 0) {
-                permissionError(response);
+                InterceptorUtils.permissionError(response);
                 return false;
             }
 
@@ -87,29 +86,6 @@ public class AuthInterceptor implements HandlerInterceptor {
             // 无需登录 放行请求
             return true;
         }
-    }
-
-
-    private void error(HttpServletResponse response) throws IOException {
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json; charset=utf-8");
-        Resp resp = Resp
-                .error()
-                .code(RespCode.UNAUTHORIZED)
-                .message("您还没有登录!或者登录过期，请重新登陆");
-        ObjectMapper objectMapper = new ObjectMapper();
-        response.getWriter().println(objectMapper.writeValueAsString(resp));
-    }
-
-    private void permissionError(HttpServletResponse response) throws IOException {
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json; charset=utf-8");
-        Resp resp = Resp
-                .error()
-                .code(RespCode.FORBIDDEN)
-                .message("权限不足，禁止访问");
-        ObjectMapper objectMapper = new ObjectMapper();
-        response.getWriter().println(objectMapper.writeValueAsString(resp));
     }
 
     @Override

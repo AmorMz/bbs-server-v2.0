@@ -26,5 +26,10 @@ public interface RespCode {
      */
     Integer FORBIDDEN = 40003;
 
+    /**
+     * 请求不被处理
+     */
+    Integer REPEAT_REQUEST = 20001;
+
 
 }

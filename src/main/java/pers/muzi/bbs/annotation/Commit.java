@@ -7,10 +7,11 @@ import java.lang.annotation.Target;
 
 /**
  * @author AmorMz
- * 管理员身份校验 AOP实现
+ * 防止重复提交 默认2s内同一用户请求相同的url认为
  */
-@Target({ElementType.TYPE,ElementType.METHOD})
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface AdminRequired {
-
+public @interface Commit {
+    // 请求时间间隔
+    long timeout() default 2L;
 }

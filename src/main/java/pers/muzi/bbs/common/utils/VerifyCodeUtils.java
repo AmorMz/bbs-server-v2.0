@@ -62,7 +62,7 @@ public class VerifyCodeUtils {
      * @return
      * @throws IOException
      */
-    public String generate(int width, int height, OutputStream os) throws IOException {
+    public static String generate(int width, int height, OutputStream os) throws IOException {
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics graphics = image.getGraphics();
         fillBackground(graphics, width, height);
@@ -81,7 +81,7 @@ public class VerifyCodeUtils {
      * @param height
      * @return
      */
-    public VerifyCode generate(int width, int height) {
+    public static VerifyCode generate(int width, int height) {
         VerifyCode verifyCode = null;
         try (
                 //将流的初始化放到这里就不需要手动关闭流
@@ -104,7 +104,7 @@ public class VerifyCodeUtils {
      * @param g
      * @param randomStr
      */
-    private void createCharacter(Graphics g, String randomStr) {
+    private static void createCharacter(Graphics g, String randomStr) {
         char[] charArray = randomStr.toCharArray();
         for (int i = 0; i < charArray.length; i++) {
             //设置RGB颜色算法参数

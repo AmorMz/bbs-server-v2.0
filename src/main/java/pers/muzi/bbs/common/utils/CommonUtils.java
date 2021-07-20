@@ -39,4 +39,14 @@ public class CommonUtils {
 
         return DigestUtils.md5DigestAsHex(str.getBytes());
     }
+
+    /**
+     * 获取UUID
+     * @return UUID
+     */
+    public static String UUID() {
+        return UUID
+                .randomUUID()
+                .toString();
+    }
 }

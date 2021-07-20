@@ -13,14 +13,12 @@ import java.util.List;
 public interface PostService {
     /**
      * 获取帖子总数 用于统计、分页
-     *
      * @return 帖子总数量
      */
     Integer countPost();
 
     /**
      * 分页查询所有帖子
-     *
      * @param tab   排序规则 latest/hot 最新/最热
      * @param page  当前页
      * @param limit 每页限制条数
@@ -30,7 +28,6 @@ public interface PostService {
 
     /**
      * 发表一篇帖子
-     *
      * @param postDTO post数据实体
      * @return 影响行数
      */
@@ -38,7 +35,6 @@ public interface PostService {
 
     /**
      * 根据帖子id展示帖子详细信息
-     *
      * @param postId 帖子id
      * @return 帖子详情实体
      */
@@ -46,9 +42,18 @@ public interface PostService {
 
     /**
      * 个人中心展示帖子 根据用户账号查询
-     *
      * @param account 用户账号
      * @return List<PostPersonalVO>
      */
     List<PostPersonalVO> listPersonalPosts(String account, Integer page, Integer limit);
+
+    /**
+     * 初始化本周热议
+     */
+    void initWeekRank();
+
+    /**
+     * 统计浏览数量
+     */
+    void viewCount();
 }

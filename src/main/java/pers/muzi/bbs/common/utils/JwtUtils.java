@@ -13,7 +13,7 @@ import java.util.Map;
  * @author AmorMz
  * jwt工具类
  */
-public class JwtUtil {
+public class JwtUtils {
     /**
      * payload存放用户ID
      */

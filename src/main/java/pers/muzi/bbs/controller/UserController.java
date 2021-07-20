@@ -9,6 +9,7 @@ import pers.muzi.bbs.annotation.LoginRequired;
 import pers.muzi.bbs.common.result.Resp;
 import pers.muzi.bbs.entity.User;
 import pers.muzi.bbs.entity.vo.user.AuthorVO;
+import pers.muzi.bbs.entity.vo.user.UserCenterVO;
 import pers.muzi.bbs.entity.vo.user.UserInfoVO;
 import pers.muzi.bbs.interceptor.AuthInterceptor;
 import pers.muzi.bbs.service.UserService;
@@ -35,5 +36,14 @@ public class UserController {
         UserInfoVO userInfoVO = new UserInfoVO();
         BeanUtils.copyProperties(user, userInfoVO);
         return Resp.ok().data("userInfo", userInfoVO);
+    }
+
+    @ApiOperation("个人中心获取用户信息")
+    @GetMapping("/info/{account}")
+    public Resp getUserInfo(@PathVariable String account) {
+        User user = userService.getUserByAccount(account);
+        UserCenterVO userCenterVO = new UserCenterVO();
+        BeanUtils.copyProperties(user, userCenterVO);
+        return Resp.ok().data("userInfo", userCenterVO);
     }
 }

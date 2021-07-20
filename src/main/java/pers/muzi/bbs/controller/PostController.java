@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import pers.muzi.bbs.annotation.Commit;
 import pers.muzi.bbs.annotation.LoginRequired;
 import pers.muzi.bbs.common.result.Resp;
 import pers.muzi.bbs.entity.dto.PostDTO;
@@ -69,6 +70,7 @@ public class PostController {
     @ApiOperation("发表一篇帖子")
     @PostMapping
     @LoginRequired
+    @Commit
     public Resp publish(@RequestBody @Validated PostDTO postDTO) {
         // 获取当前登录用户id
         Integer authorId = AuthInterceptor.getId();

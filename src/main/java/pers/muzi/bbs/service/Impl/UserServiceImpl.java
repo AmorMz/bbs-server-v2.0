@@ -3,7 +3,7 @@ package pers.muzi.bbs.service.Impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pers.muzi.bbs.common.utils.CommonUtils;
-import pers.muzi.bbs.common.utils.JwtUtil;
+import pers.muzi.bbs.common.utils.JwtUtils;
 import pers.muzi.bbs.dao.UserDAO;
 import pers.muzi.bbs.entity.User;
 import pers.muzi.bbs.entity.dto.LoginDTO;
@@ -11,7 +11,6 @@ import pers.muzi.bbs.entity.dto.RegisterDTO;
 import pers.muzi.bbs.exception.ParamException;
 import pers.muzi.bbs.exception.UserException;
 import pers.muzi.bbs.service.UserService;
-
 import java.util.Date;
 import java.util.Objects;
 
@@ -32,6 +31,8 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void register(RegisterDTO registerDTO) {
+
+
         // 验证账号、昵称是否存在
         User userByAccount = userDAO.getUserByAccount(registerDTO.getAccount());
         User userByNickname = userDAO.getUserByNickname(registerDTO.getNickname());
@@ -73,7 +74,7 @@ public class UserServiceImpl implements UserService {
     public String login(LoginDTO loginDTO) {
         User user = userDAO.getUserByAccount(loginDTO.getAccount());
         if (user == null) {
-            throw new UserException("用户不存在！请检查您的用户名");
+            throw new UserException("用户不存在！请检查您的账号");
         }
         if (user.getStatus()) {
             throw new UserException("您的账号被禁用，暂时无法登录");
@@ -86,7 +87,7 @@ public class UserServiceImpl implements UserService {
         }
 
         // 通过检验 签发token
-        return JwtUtil
+        return JwtUtils
                 .getToken(user.getId(), user.getRole(), loginDTO.getRememberMe());
 
     }
@@ -138,5 +139,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Integer id) {
         return userDAO.getUserById(id);
+    }
+
+    /**
+     * 根据账号查询用户信息
+     *
+     * @param account 用户账号
+     * @return 用户实体
+     */
+    @Override
+    public User getUserByAccount(String account) {
+        return userDAO.getUserByAccount(account);
     }
 }

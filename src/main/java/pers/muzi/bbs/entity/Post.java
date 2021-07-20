@@ -55,4 +55,7 @@ public class Post {
 
     @ApiModelProperty("修改时间")
     private Date modifyTime;
+
+    @ApiModelProperty("逻辑删除")
+    private Boolean delete;
 }
