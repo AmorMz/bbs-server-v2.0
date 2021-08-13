@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * @author AmorMz
- * 管理员身份校验 AOP实现
+ * 管理员身份校验
  */
 @Target({ElementType.TYPE,ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

@@ -12,9 +12,7 @@ import springfox.documentation.oas.annotations.EnableOpenApi;
 @MapperScan({"pers.muzi.bbs.dao"})
 @EnableOpenApi
 public class BbsApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(BbsApplication.class, args);
     }
-
 }

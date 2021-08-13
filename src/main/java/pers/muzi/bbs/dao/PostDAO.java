@@ -25,6 +25,13 @@ public interface PostDAO {
     Integer countPost();
 
     /**
+     * 统计账号下帖子数量
+     *
+     * @return 总数量
+     */
+    Integer countPostByAccount(@Param("account") String account);
+
+    /**
      * 分页查询帖子 根据tab排序
      *
      * @param tab latest 最新 hot 最热

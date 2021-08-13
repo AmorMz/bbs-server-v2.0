@@ -148,6 +148,13 @@
         WHERE is_delete = 0
     </select>
 
+    <select id="countPostByAccount" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM bbs_post
+        WHERE is_delete = 0 AND user_id = (select id from bbs_user where account = #{account})
+    </select>
+
+
     <select id="listPosts" resultMap="postListMap">
         SELECT
         p.id,
@@ -252,7 +259,7 @@
                essence,
                create_time
         FROM bbs_post
-        WHERE user_id = (SELECT user_id FROM bbs_user WHERE account = #{account})
+        WHERE user_id = (SELECT id FROM bbs_user WHERE account = #{account})
           AND is_delete = 0
         ORDER BY create_time DESC
     </select>

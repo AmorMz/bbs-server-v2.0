@@ -1,18 +1,17 @@
 package pers.muzi.bbs.interceptor;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import pers.muzi.bbs.annotation.AdminRequired;
 import pers.muzi.bbs.annotation.LoginRequired;
 import pers.muzi.bbs.common.constant.RespCode;
-import pers.muzi.bbs.common.result.Resp;
 import pers.muzi.bbs.common.utils.InterceptorUtils;
 import pers.muzi.bbs.common.utils.JwtUtils;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * @author AmorMz
@@ -48,13 +47,12 @@ public class AuthInterceptor implements HandlerInterceptor {
         // 请求Controller是否存在AdminRequired注解
         AdminRequired adminRequired = handlerMethod.getMethod().getDeclaringClass().getAnnotation(AdminRequired.class);
         if (loginRequired != null || adminRequired != null) {
-            /*
-             请求头中Authorization格式为 Bearer token
-             如果不携带token get到的是字符串undefined
-             */
+
+            // 请求头中Authorization格式为 Bearer token
+            // 如果不携带token get到的是字符串undefined
             String bearer = request.getHeader("Authorization");
             if (!StringUtils.hasLength(bearer)) {
-                InterceptorUtils.error(response, "您还没有登录，请登陆后继续操作",RespCode.UNAUTHORIZED);
+                InterceptorUtils.error(response, "您还没有登录，请登陆后继续操作", RespCode.UNAUTHORIZED);
                 return false;
             }
 
@@ -62,14 +60,14 @@ public class AuthInterceptor implements HandlerInterceptor {
             String token = bearer.substring(7);
             String undefined = "undefined";
             if ("".equals(token) || token.equalsIgnoreCase(undefined)) {
-                InterceptorUtils.error(response, "您还没有登录，请登陆后继续操作",RespCode.UNAUTHORIZED);
+                InterceptorUtils.error(response, "您还没有登录，请登陆后继续操作", RespCode.UNAUTHORIZED);
                 return false;
             }
 
-            /**
-             * 工具类get信息之前会进行jwt验签 异常由统一异常进行处理
-             * 获取当前登录用户id、role
-             */
+
+            // 工具类get信息之前会进行jwt验签 异常由统一异常进行处理
+            // 获取当前登录用户id、role
+
             Integer userId = JwtUtils.getIdByJWT(token);
             Integer role = JwtUtils.getRoleByJWT(token);
             USER_ID.set(userId);
@@ -80,12 +78,9 @@ public class AuthInterceptor implements HandlerInterceptor {
                 InterceptorUtils.permissionError(response);
                 return false;
             }
-
-            return true;
-        } else {
-            // 无需登录 放行请求
-            return true;
         }
+
+        return true;
     }
 
     @Override

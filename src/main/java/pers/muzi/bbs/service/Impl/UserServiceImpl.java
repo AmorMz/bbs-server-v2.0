@@ -1,6 +1,8 @@
 package pers.muzi.bbs.service.Impl;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import pers.muzi.bbs.common.utils.CommonUtils;
 import pers.muzi.bbs.common.utils.JwtUtils;
@@ -8,6 +10,7 @@ import pers.muzi.bbs.dao.UserDAO;
 import pers.muzi.bbs.entity.User;
 import pers.muzi.bbs.entity.dto.LoginDTO;
 import pers.muzi.bbs.entity.dto.RegisterDTO;
+import pers.muzi.bbs.entity.vo.user.UserInfoVO;
 import pers.muzi.bbs.exception.ParamException;
 import pers.muzi.bbs.exception.UserException;
 import pers.muzi.bbs.service.UserService;
@@ -23,6 +26,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDAO userDAO;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 用户注册
@@ -131,14 +137,26 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 根据id查询用户
-     *
+     * 根据id获取用户信息
      * @param id 用户id
      * @return User
      */
     @Override
-    public User getUserById(Integer id) {
-        return userDAO.getUserById(id);
+    public UserInfoVO getUserInfoById(Integer id) {
+        String redisKey = "userInfo:" + id;
+        // 判断redis中是否存在缓存
+        if (redisTemplate.hasKey(redisKey)) {
+            return (UserInfoVO) redisTemplate.opsForValue().get(redisKey);
+        }
+
+        // 不存在 查询数据库 加入缓存
+        User user = userDAO.getUserById(id);
+        UserInfoVO userInfoVO = new UserInfoVO();
+        BeanUtils.copyProperties(user, userInfoVO);
+        redisTemplate.opsForValue().set(redisKey, userInfoVO);
+
+        return userInfoVO;
+
     }
 
     /**
@@ -150,5 +168,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByAccount(String account) {
         return userDAO.getUserByAccount(account);
+    }
+
+    /**
+     * 注销登录
+     */
+    @Override
+    public void logout(Integer id) {
+        // 删除redis中的userinfo
+        String redisKey = "userInfo:" + id;
+        redisTemplate.delete(redisKey);
     }
 }

@@ -15,6 +15,7 @@ import pers.muzi.bbs.entity.vo.post.PostPersonalVO;
 import pers.muzi.bbs.service.PostService;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -34,6 +35,16 @@ public class PostServiceImpl implements PostService {
     @Override
     public Integer countPost() {
         return postDAO.countPost();
+    }
+
+    /**
+     * 获取账号下帖子总数
+     * @param account 用户账号
+     * @return 帖子总数
+     */
+    @Override
+    public Integer countPostByAccount(String account) {
+        return postDAO.countPostByAccount(account);
     }
 
     /**

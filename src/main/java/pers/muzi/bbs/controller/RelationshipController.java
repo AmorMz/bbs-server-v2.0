@@ -59,7 +59,7 @@ public class RelationshipController {
     public Resp unFollow(@PathVariable("userId") Integer userId) {
         // 当前登录用户id
         Integer loginId = AuthInterceptor.getId();
-        if (!Objects.equals(userId, loginId)) {
+        if (!userService.validateFollow(loginId, userId)) {
             return Resp.ok().message("您还没有关注他哦~");
         }
 

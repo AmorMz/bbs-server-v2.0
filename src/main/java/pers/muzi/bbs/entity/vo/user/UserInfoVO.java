@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 /**
  * @author AmorMz
  */
@@ -15,7 +17,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @ToString
-public class UserInfoVO {
+public class UserInfoVO implements Serializable {
     @ApiModelProperty("主键id")
     private Integer id;
 

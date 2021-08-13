@@ -42,6 +42,18 @@ public class PostController {
         return Resp.ok().data("total", countPost);
     }
 
+    /**
+     * 查询某账号发帖数量 用于分页、统计等
+     *
+     * @return total 某账号发帖总数量
+     */
+    @ApiOperation("获取某账号/用户发帖总数量")
+    @GetMapping("/count/{account}")
+    public Resp count(@PathVariable("account") String account) {
+        Integer countPost = postService.countPostByAccount(account);
+        return Resp.ok().data("total", countPost);
+    }
+
 
     /**
      * 分页查询所有帖子

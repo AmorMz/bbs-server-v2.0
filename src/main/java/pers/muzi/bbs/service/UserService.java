@@ -4,6 +4,7 @@ import pers.muzi.bbs.entity.User;
 import pers.muzi.bbs.entity.dto.LoginDTO;
 import pers.muzi.bbs.entity.dto.RegisterDTO;
 import pers.muzi.bbs.entity.vo.user.AuthorVO;
+import pers.muzi.bbs.entity.vo.user.UserInfoVO;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -50,11 +51,11 @@ public interface UserService {
     void unfollow(Integer loginId, Integer userId);
 
     /**
-     * 根据用户id查询用户
+     * 获取用户信息
      * @param id 用户id
-     * @return User
+     * @return 用户信息实体
      */
-    User getUserById(Integer id);
+    UserInfoVO getUserInfoById(Integer id);
 
     /**
      * 根据账号查询用户
@@ -62,4 +63,10 @@ public interface UserService {
      * @return
      */
     User getUserByAccount(String account);
+
+    /**
+     * 退出登录
+     * @param id 用户id
+     */
+    void logout(Integer id);
 }

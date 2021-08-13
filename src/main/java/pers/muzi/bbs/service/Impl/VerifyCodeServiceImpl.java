@@ -40,10 +40,12 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
         stringRedisTemplate
                 .opsForValue()
                 .set("verifyCode:" + uuid, verifyCode.getCode(), 60, TimeUnit.SECONDS);
+
         // 图片编码为Base64
         String codeBase64 = "data:image/png;base64," +
                 VerifyCodeUtils.getVerifyCodeBase64(verifyCode.getImgBytes());
-        // 返回图片base64编码
+
+        // 返回图片base64编码 本次验证码请求唯一标识uuid
         map.put("codeBase64", codeBase64);
         map.put("uuid", uuid);
         return map;

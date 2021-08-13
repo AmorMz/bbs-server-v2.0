@@ -10,6 +10,7 @@ import pers.muzi.bbs.common.result.Resp;
 import pers.muzi.bbs.common.utils.JwtUtils;
 import pers.muzi.bbs.entity.dto.LoginDTO;
 import pers.muzi.bbs.entity.dto.RegisterDTO;
+import pers.muzi.bbs.interceptor.AuthInterceptor;
 import pers.muzi.bbs.service.UserService;
 import pers.muzi.bbs.service.VerifyCodeService;
 
@@ -65,6 +66,8 @@ public class AuthController {
     @GetMapping("/logout")
     @LoginRequired
     public Resp logout() {
+        Integer id = AuthInterceptor.getId();
+        userService.logout(id);
         return Resp.ok().message("退出成功");
     }
 

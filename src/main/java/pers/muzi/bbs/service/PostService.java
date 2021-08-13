@@ -18,6 +18,13 @@ public interface PostService {
     Integer countPost();
 
     /**
+     * 获取账号下帖子总数
+     * @param account 用户账号
+     * @return 帖子总数
+     */
+    Integer countPostByAccount(String account);
+
+    /**
      * 分页查询所有帖子
      * @param tab   排序规则 latest/hot 最新/最热
      * @param page  当前页
