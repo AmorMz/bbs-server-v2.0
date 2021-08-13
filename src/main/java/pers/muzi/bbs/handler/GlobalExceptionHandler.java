@@ -7,9 +7,11 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import pers.muzi.bbs.common.constant.RespCode;
 import pers.muzi.bbs.common.result.Resp;
 import pers.muzi.bbs.exception.ParamException;
+import pers.muzi.bbs.exception.UploadException;
 import pers.muzi.bbs.exception.UserException;
 
 import java.util.Objects;
@@ -96,6 +98,31 @@ public class GlobalExceptionHandler {
                 .error()
                 .message(e.getMessage());
     }
+
+    // ------------------文件上传异常-------------------
+
+    /**
+     * 上传文件异常
+     */
+    @ExceptionHandler(UploadException.class)
+    public Resp uploadExceptionHandler(UploadException e) {
+        log.error(e.getMessage(), e);
+        return Resp
+                .error()
+                .message(e.getMessage());
+    }
+
+    /**
+     * 文件尺寸超过最大允许范围 配置文件中配置
+     */
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public Resp uploadExceptionHandler(MaxUploadSizeExceededException e) {
+        log.error(e.getMessage(), e);
+        return Resp
+                .error()
+                .message("文件过大，限制300KB");
+    }
+
 
 
     // -------------------未知异常-------------------
